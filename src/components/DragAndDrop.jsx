@@ -6,18 +6,18 @@ import {  useDrop } from "react-dnd";
 import ImageDraggable from "./ImageDraggable";
 
 function DragAndDrop(){
-    const {donneesExerciceChoisi,donneeImagesComposantDragAndDrop,materielUtilisable,listeComposantsCreeParLUtilisateur, setlisteComposantsCreeParLUtilisateur} = useContext(ContexteRealisationExerciceAssociation)
+    const {niveau,donneesExerciceChoisi,donneeImagesComposantDragAndDrop,materielUtilisable,listeComposantsCreeParLUtilisateur, setlisteComposantsCreeParLUtilisateur} = useContext(ContexteRealisationExerciceAssociation)
     //console.log(donneeImagesComposantDragAndDrop)
     //console.log(donneesExerciceChoisi)
    
     let [{isOver},drop] = useDrop(()=>({
         accept: "image",
-        drop: (item)=> handleListeComposantsCreeParLUtilisateur(item),
+        drop: (item)=> handleAjouterElementDansListeComposantsCreeParLUtilisateur(item),
     }),[materielUtilisable])
 
    
-    //a remplacer plus tard
-    function handleListeComposantsCreeParLUtilisateur(item){
+    //ajoute un element de la liste des composants creer par l'utilisateur
+    function handleAjouterElementDansListeComposantsCreeParLUtilisateur(item){
         // console.log(donneesExerciceChoisi.categorie)
         // console.log('dropover')
         if(item.materiel == item.materielCompo){
@@ -26,7 +26,7 @@ function DragAndDrop(){
             //console.log(listeComposantsCreeParLUtilisateur)
             // Créez une copie de la liste d'objets
             const nouvelleListeComposantsCreeParLUtilisateur = [...listeComposantsCreeParLUtilisateur];
-            //console.log(newListeObjets)
+            //console.log(nouvelleListeComposantsCreeParLUtilisateur)
             const composantChoisi = nouvelleListeComposantsCreeParLUtilisateur.find(compo => compo.nom === item.nom);
             //console.log(composantChoisi)
             let indexComposant = nouvelleListeComposantsCreeParLUtilisateur.indexOf(composantChoisi)
@@ -35,6 +35,22 @@ function DragAndDrop(){
             // Mettez à jour la liste des composant Creer par l'uilisateur
             setlisteComposantsCreeParLUtilisateur(nouvelleListeComposantsCreeParLUtilisateur);
         }
+    }
+    
+    //effacer un element de la liste des composants creer par l'utilisateur
+    function handleEffacerElementDansListeComposantsCreeParLUtilisateur(item,composant){
+        //console.log(item)
+        //console.log(composant)
+        const nouvelleListeComposantsCreeParLUtilisateur = [...listeComposantsCreeParLUtilisateur];
+        //console.log(nouvelleListeComposantsCreeParLUtilisateur)
+        const composantChoisi = nouvelleListeComposantsCreeParLUtilisateur.find(compo => compo.nom === composant.nom);
+        //console.log(composantChoisi)
+        let indexComposant = nouvelleListeComposantsCreeParLUtilisateur.indexOf(composantChoisi)
+        //console.log(indexComposant)
+        //enleve un element de listeImg de base
+        nouvelleListeComposantsCreeParLUtilisateur[indexComposant].listeImg.pop();
+        // Mettez à jour la liste des composant Creer par l'uilisateur
+        setlisteComposantsCreeParLUtilisateur(nouvelleListeComposantsCreeParLUtilisateur);
     }
 
     return(
@@ -58,7 +74,9 @@ function DragAndDrop(){
                     )
                 })}
             </div>
-            <div className="col-span-5 bg-blue-500 grid grid-cols-2 gap-1" ref={drop}>
+            <div className="col-span-5">
+                {(niveau != "niveau 1") &&<div className="bg-orange-500 h-16">construction association</div>}
+                <div className=" p-2 bg-blue-500 grid grid-cols-2 gap-3 min-h-96" ref={drop}>
                 {listeComposantsCreeParLUtilisateur.map((compo)=>{
                     if (compo.listeImg.length >0){
                         return(
@@ -66,7 +84,12 @@ function DragAndDrop(){
                                     <div>{compo.nom}  </div>
                                     <div className="grid grid-cols-5">
                                     {compo.listeImg.map((item,index) => ( 
-                                        <div key={index+'a'+item.nom}><img src={`img/${donneesExerciceChoisi.categorie}/composants/${item}`} /></div>
+                                        <div key={index+'a'+item.nom} 
+                                            onClick={()=>handleEffacerElementDansListeComposantsCreeParLUtilisateur(item,compo)}
+                                            className="cursor-pointer hover:border-2 border-red-500"
+                                        >    
+                                            <img src={`img/${donneesExerciceChoisi.categorie}/composants/${item}`} />
+                                        </div>
                                     ))}
                                     </div>
                                 
@@ -75,7 +98,7 @@ function DragAndDrop(){
                     }
                    
                 })}
-               
+               </div>
             </div>
         </>
     )

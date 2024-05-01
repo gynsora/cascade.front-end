@@ -7,10 +7,15 @@ import { DonneeExercices } from "../utils/Data";
 import { ContexteAudio } from "../utils/contexte/ContexteAudio";
 import { ContexteRealisationExerciceAssociation } from "../utils/contexte/ContexteRealisationExerciceAssociation";
 
-import DragAndDrop from "../components/DragAndDrop";
 import melangerTableau from "../utils/fonctionGenerale/melangerTableau";
 import comparerTableau from "../utils/fonctionGenerale/comparerTableau";
+
 import DivListeSymboleMonnaieMateriaux from "../components/DivListeSymboleMonnaieMateriaux";
+import DragAndDrop from "../components/DragAndDrop";
+import Commande from "../components/Commande";
+import RegleAssociation from "../components/RegleAssociation";
+
+
 
 //ce composant permet d'afficher la page d'un exercice d'association en fonction d'une categorie et d'un niveau passé en parametres
 function ExerciceAssociation() {
@@ -120,7 +125,8 @@ function ExerciceAssociation() {
     //fonction permettant d'initialiser les données de l'exercice d'association choisi
     function handleInitialisationExerciceChoisi( ressourcemax, donneeInitaleExerciceChoisi){
         console.log("handle INitialisation")
-        setPhase("realisationExercice")
+        //setPhase("realisationExercice")
+        setPhase("explicationCommande")
         setDonneesExerciceChoisi(donneeInitaleExerciceChoisi)
 
         setEtapeExercice(ressourcemax)
@@ -239,10 +245,61 @@ function ExerciceAssociation() {
         return <Navigate to="/erreur-404" replace={true} />;
     }
 
+    //cree une div pour afficher la liste des composants que l'eleve doit reproduire pour realiser la commande de l'exercice choisi. 
+    if (phase =='explicationCommande'){
+        return (
+            <main className="min-h-screen py-32 sm:py-32 lg:py-42 " >
+                <div className="text-green-500 py-3 px-3">{donneesExerciceChoisi.txtCommandeExerciceAssociation}</div>
+                <div className="mx-auto max-w-6xl ">
+                    <Commande 
+                        composants={donneesExerciceChoisi.composants} 
+                        categorie={donneesExerciceChoisi.categorie}
+                    />
+                </div>
+                <div className="mx-auto max-w-6xl ">
+                    <div className="flex align-end justify-end justify-items-end">
+                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={()=>setPhase("explicationRegle")}>
+                            VOIR LES RÈGLES D'ASSOCITATIONS {`>`} 
+                        </button>
+                    </div>
+                </div>
+            </main>
+        )
+    }
+
+    //cree une div pour afficher les regles d'association pour obtenir chaque composants 
+    if (phase =='explicationRegle'){
+        return (
+            <main className="min-h-screen py-32 sm:py-32 lg:py-42 " >
+                <div className="text-green-500 py-3 px-3">{donneesExerciceChoisi.txtRegleAssociation}</div>
+                <div className="mx-auto max-w-6xl ">
+                <RegleAssociation  
+                    detailComposantExercice={
+                        {  
+                            "categorieExercice":donneesExerciceChoisi.categorie,
+                            "composants":donneesExerciceChoisi.composants , 
+                            "etapeRessources" : donneesExerciceChoisi.etapeRessource
+                        }
+                    }
+                />
+                </div>
+                <div className="mx-auto max-w-6xl ">
+                    <div className="flex align-end justify-end justify-items-end">
+                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={()=>setPhase("realisationExercice")}>
+                            COMMENCER L'EXERCICE {`>`} 
+                        </button>
+                    </div>
+                </div>
+                
+            </main>
+        )
+    }
+
     if(phase =='realisationExercice' ){
         return (
             <ContexteRealisationExerciceAssociation.Provider 
                 value={{
+                    niveau,
                     donneesExerciceChoisi,
                     etapeExercice,setEtapeExercice,
                     donneeImagesComposantDragAndDrop,
@@ -253,8 +310,8 @@ function ExerciceAssociation() {
                      }}
             >
                 <main className="min-h-screen py-32 sm:py-32 lg:py-42 " >
-                <div className="text-green-500 py-3 px-3">{donneesExerciceChoisi.txtExplicationExercice}</div>
-                    <div className="grid grid-cols-9 gap-2 min-h-80">
+                    <div className="text-green-500 py-3 px-3">{donneesExerciceChoisi.txtExplicationExercice}</div>
+                    <div className="grid grid-cols-9 gap-2 ">
                         <div className="col-span-3  bg-red-400 p-1 ">
                             <DivListeSymboleMonnaieMateriaux />
                         </div>
