@@ -9,11 +9,22 @@ import { ContexteRealisationExerciceAssociation } from "../utils/contexte/Contex
 
 import DragAndDrop from "../components/DragAndDrop";
 import melangerTableau from "../utils/fonctionGenerale/melangerTableau";
+import comparerTableau from "../utils/fonctionGenerale/comparerTableau";
+import DivListeSymboleMonnaieMateriaux from "../components/DivListeSymboleMonnaieMateriaux";
 
 //ce composant permet d'afficher la page d'un exercice d'association en fonction d'une categorie et d'un niveau passé en parametres
 function ExerciceAssociation() {
     //contient les données des exercices //A RETIRER APRES INTEGRATIONS BDD
     const donnesDeToutLesExercices = DonneeExercices ;
+
+    // valeur initiale de "constructionModelAssociation"
+    //les clefs de cette objet correspondent au clé du tableau "etapeRessource", (on ne prend pas en compte les composants)
+    const constructionModelAssocitiationVide = {
+        "symboles":[],
+        "monnaies":[],
+        "materiaux":[],
+        "composants":[]
+    }
 
     //contexte pour le son
     let {handleNomAudio} = useContext(ContexteAudio)
@@ -28,7 +39,7 @@ function ExerciceAssociation() {
     const [etapeExercice,setEtapeExercice] = useState(''); //permet de gerer le niveau de ressource de l'exercice: symbole, monnaie , materiaux, composants 
     const [modelAssocitation,setModelAssocitation] = useState(); //ce useState créer un objet contenant les règles d'association, permettant de créer un composant choisi. cela servira de comparaison avec le model que l'enfant créera durant l'exercice (constructionRegleAssociation).
     const [constructionModelAssociation, setConstructionModelAssociation] = useState(); // ce useState servira pour que l'enfant puisse voir les regles d'association qu'il créera et pour si il fait erreur ou non
-    const [materielUtilisable, setMaterielUtilisable] = useState(); // contiendra le nom du matériel disponible après avoir reussi à construire un model d'association complet et correct
+    const [materielUtilisable, setMaterielUtilisable] = useState(""); // contiendra le nom du matériel disponible après avoir reussi à construire un model d'association complet et correct
     
     const [listeComposantsCreeParLUtilisateur,setlisteComposantsCreeParLUtilisateur] = useState()//liste composant créer durant l'exercice par l'utilisateur
 
@@ -85,6 +96,7 @@ function ExerciceAssociation() {
         return() =>{
             isCancelled = true
             document.title = ""
+            setMaterielUtilisable("")
         }
     },[categorie,niveau])
 
@@ -111,19 +123,23 @@ function ExerciceAssociation() {
         setPhase("realisationExercice")
         setDonneesExerciceChoisi(donneeInitaleExerciceChoisi)
 
-        //setEtapeExercice(ressourcemax)
-        setMaterielUtilisable("un pommier") //AAAAAAAAAAa mettre en commentaire
+        setEtapeExercice(ressourcemax)
+        //setMaterielUtilisable("du blé") //AAAAAAAAAAa mettre en commentaire
         //setModelAssocitation("")
-        //setConstructionModelAssociation(constructionModelAssocitiationVide)
+        setConstructionModelAssociation(constructionModelAssocitiationVide)
         
         //initialisation des données d'images (liste d'images pour chaque composant) nécessaire pour le drag and drop (pour le côté des images Draggable)
-        const tableauImagesPourDragAndDrop = handleNouvellesListesRandomImagesRandom(donneeInitaleExerciceChoisi.composants)
+        const tableauImagesPourDragAndDrop = handleInitialisationNouvellesListesRandomImagesRandom(donneeInitaleExerciceChoisi.composants)
         setDonneeImagesComposantDragAndDrop(tableauImagesPourDragAndDrop)
-        //initialisationListeComposantsCreeParUtilisateur(donneeInitaleExerciceChoisi)
+
+        //initialisation liste composant creer par l'utilisateur
+        const tableauListeComposantdeLutilisateur = handleInitialisationlisteComposantsCreeParLUtilisateur(donneeInitaleExerciceChoisi.composants)
+        setlisteComposantsCreeParLUtilisateur(tableauListeComposantdeLutilisateur)
     }
 
-    //cree un liste d'images composants dans un ordre aléatoire pour chaque composant (pour le Drag And Drop)
-    function handleNouvellesListesRandomImagesRandom(listecomposants){
+    //fonction permettant d'initialiser le useState donneeImagesComposantDragAndDrop
+    //cree un liste d'images composants dans un ordre aléatoire pour chaque composant (pour le Drag And Drop) 
+    function handleInitialisationNouvellesListesRandomImagesRandom(listecomposants){
         
         //creation d'une liste d'objet contenant l'image ,le nom, et l'id de chaque composant (pour creer un liste d'image random)
         const listeImagesComposant = []
@@ -131,7 +147,9 @@ function ExerciceAssociation() {
             const image = compo.img
             const id = compo.id
             const nom = compo.nom
-            const nouvelObjetImage = {"img":image, "id":id, "nom":nom}
+            const coutmaterielDucomposant = compo.coutComposant.find((res)=> res.ressource == "materiaux")
+            const nomMaterielDuComposant = coutmaterielDucomposant.texte
+            const nouvelObjetImage = {"img":image, "id":id, "nom":nom ,"materiel":nomMaterielDuComposant}
             listeImagesComposant.push(nouvelObjetImage)
         })
         //console.log(listeImagesComposant)
@@ -164,6 +182,56 @@ function ExerciceAssociation() {
         //console.log(nouvelleslistesRandomImagesComposant)
         return nouvelleslistesRandomImagesComposant
     }
+  
+    // fonction permettant d'initialiser listeComposantsCreeParLUtilisateur
+    function handleInitialisationlisteComposantsCreeParLUtilisateur(listecomposants){
+        let nouvelleListeComposantCreerParLUtilisateur = []
+        listecomposants.map((compo)=> {
+            let nomComposant = compo.nom
+            let listeImg= []
+            let nouvelObjetComposant = {"nom":nomComposant,"listeImg":listeImg}
+            nouvelleListeComposantCreerParLUtilisateur.push(nouvelObjetComposant)
+        })
+        //console.log(nouvelleListeComposantCreerParLUtilisateur)
+        return nouvelleListeComposantCreerParLUtilisateur
+    }
+
+    
+
+    //fonction permettant d'ajouter des elements en fonction d'une regle d'association (cet element peut reprensenter un symbole, une monnaie , un materiaux)
+    // pour les exercices de niveau 1 on n'affiche pas la liste d'association
+    function handleConstructionModelAssociation(element){//AAAAAAA FAIRE
+        //permet de gerer les exercices d'association de niveau 1
+        if(element.utilisable && donneesExerciceChoisi.ressourceMax == "materiaux"){
+            console.log(materielUtilisable)
+            setMaterielUtilisable("waza")
+            // //setMaterielUtilisable(element.)
+            // console.log(donneesExerciceChoisi.composants)
+            // //console.log(element.img)
+            // let tabImgMateriel = [element.img]
+            // console.log(rechercheComposantModelAssociation(tabImgMateriel))
+            
+            // setMaterielUtilisable("du blé")
+          
+            //const rechercheMaterielDuComposant = donneesExerciceChoisi?.composants.coutComposant.find((compo) => compo.ressource === "materiaux" )
+            //console.log(rechercheMaterielDuComposant)
+        }
+    }
+
+  
+
+    //cette fonction renvera un objet "composant" en fonction de l'étape de l'exercice et du tableau d'image mit en paramètre
+    function rechercheComposantModelAssociation(tableauDimg){
+        let nouveauComposantModel = ""
+        donneesExerciceChoisi.composants.map((composantModel,index) => {
+            const coutNouveauModel = composantModel.coutComposant.find((cout) => cout.ressource === etapeExercice )
+            if (comparerTableau(tableauDimg, coutNouveauModel.listeImg) ){
+                console.log('youpiz')
+                nouveauComposantModel = composantModel 
+            }
+        })
+        return nouveauComposantModel
+    }
 
 
     //redirige l'utilisateur vers la page not found si les fetch dans useEffect ne renvoi rien ou genere une erreur
@@ -173,14 +241,24 @@ function ExerciceAssociation() {
 
     if(phase =='realisationExercice' ){
         return (
-            <ContexteRealisationExerciceAssociation.Provider value={{donneesExerciceChoisi,donneeImagesComposantDragAndDrop,materielUtilisable }}>
+            <ContexteRealisationExerciceAssociation.Provider 
+                value={{
+                    donneesExerciceChoisi,
+                    etapeExercice,setEtapeExercice,
+                    donneeImagesComposantDragAndDrop,
+                    materielUtilisable,setMaterielUtilisable,
+                    listeComposantsCreeParLUtilisateur,
+                    handleConstructionModelAssociation,
+                    setlisteComposantsCreeParLUtilisateur
+                     }}
+            >
                 <main className="min-h-screen py-32 sm:py-32 lg:py-42 " >
                 <div className="text-green-500 py-3 px-3">{donneesExerciceChoisi.txtExplicationExercice}</div>
                     <div className="grid grid-cols-9 gap-2 min-h-80">
-                        <div className="col-span-2 grid grid-cols-3 bg-red-400 p-1 ">
-                            affichage 
+                        <div className="col-span-3  bg-red-400 p-1 ">
+                            <DivListeSymboleMonnaieMateriaux />
                         </div>
-                        <div className="grid grid-cols-7 col-span-7 bg-yellow-400 p-1">
+                        <div className="grid grid-cols-6 col-span-6 bg-yellow-400 p-1">
                            <DragAndDrop />
                         </div>
                     </div>
