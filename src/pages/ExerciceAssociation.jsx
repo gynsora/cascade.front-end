@@ -98,16 +98,19 @@ function ExerciceAssociation() {
             }
         }
         fetchExerciceAssociation()
+
         return() =>{
             isCancelled = true
             document.title = ""
             setMaterielUtilisable("")
+            setDonneesExerciceChoisi("")
+            handleNomAudio("")
         }
     },[categorie,niveau])
 
     //permet de manipuler le son en fonction des phases de l'exercice
     useEffect(() => {
-        if(phase == "explicationCommande" && donneesExerciceChoisi){
+        if(phase == "explicationCommande" && donneesExerciceChoisi ){
             handleNomAudio(donneesExerciceChoisi?.sndCommandeExerciceAssociation)
         }
         if(phase == "explicationRegle" && donneesExerciceChoisi){
@@ -116,10 +119,9 @@ function ExerciceAssociation() {
         if(phase == "realisationExercice" && donneesExerciceChoisi){
             handleNomAudio(donneesExerciceChoisi?.sndExplicationExercice)
         }
-        // if(phase == "explicationRegle" && donneesExerciceChoisi){
-        //     handleNomAudio(donneesExerciceChoisi.sndRegleAssociation)
-        // }
-       
+        if(phase == "explicationRegle" && donneesExerciceChoisi){
+            handleNomAudio(donneesExerciceChoisi.sndRegleAssociation)
+        }
     }, [phase,categorie,niveau]);
 
     //fonction permettant d'initialiser les données de l'exercice d'association choisi
@@ -295,6 +297,7 @@ function ExerciceAssociation() {
         )
     }
 
+    //cree un div pour afficher l'interface permettant à l'éleve de réaliser sont exercice
     if(phase =='realisationExercice' ){
         return (
             <ContexteRealisationExerciceAssociation.Provider 
@@ -311,14 +314,35 @@ function ExerciceAssociation() {
             >
                 <main className="min-h-screen py-32 sm:py-32 lg:py-42 " >
                     <div className="text-green-500 py-3 px-3">{donneesExerciceChoisi.txtExplicationExercice}</div>
-                    <div className="grid grid-cols-9 gap-2 ">
-                        <div className="col-span-3  bg-red-400 p-1 ">
-                            <DivListeSymboleMonnaieMateriaux />
-                        </div>
-                        <div className="grid grid-cols-6 col-span-6 bg-yellow-400 p-1">
-                           <DragAndDrop />
+                    <div className="mx-auto max-w-6xl ">
+                        <div className="grid grid-cols-9 gap-2 ">
+                            <div className="col-span-3  bg-red-400 p-1 ">
+                                <DivListeSymboleMonnaieMateriaux />
+                            </div>
+                            <div className="grid grid-cols-6 col-span-6 bg-yellow-400 p-1">
+                            <DragAndDrop />
+                            </div>
                         </div>
                     </div>
+                    <div>PREPARATION MODAL</div>
+                    <div className="mx-auto max-w-6xl ">
+                        <RegleAssociation  
+                            detailComposantExercice={
+                                {  
+                                    "categorieExercice":donneesExerciceChoisi.categorie,
+                                    "composants":donneesExerciceChoisi.composants , 
+                                    "etapeRessources" : donneesExerciceChoisi.etapeRessource
+                                }
+                            }
+                        />
+                    </div>
+                    <div className="mx-auto max-w-6xl ">
+                        <Commande 
+                            composants={donneesExerciceChoisi.composants} 
+                            categorie={donneesExerciceChoisi.categorie}
+                        />
+                    </div>
+
                 </main>
             </ContexteRealisationExerciceAssociation.Provider>
         )

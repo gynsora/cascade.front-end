@@ -11,7 +11,8 @@ export const AudioProvider = ({ children }) => {
    
     useEffect(() => {
      // console.log(audio.src)
-      //audio.pause();
+      audio.src="";
+      audio.pause();
       audio.src = "/sound/"+nomAudio;
       if(isPlaying){
         audio.play();

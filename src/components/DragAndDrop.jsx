@@ -10,9 +10,12 @@ function DragAndDrop(){
     //console.log(donneeImagesComposantDragAndDrop)
     //console.log(donneesExerciceChoisi)
    
-    let [{isOver},drop] = useDrop(()=>({
+    let [{ isOver},drop] = useDrop(()=>({
         accept: "image",
         drop: (item)=> handleAjouterElementDansListeComposantsCreeParLUtilisateur(item),
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+          }),
     }),[materielUtilisable])
 
    
@@ -59,7 +62,7 @@ function DragAndDrop(){
                 {donneeImagesComposantDragAndDrop.map((compo)=>{
                     //console.log(compo)
                     return (
-                    <div key={compo.id} className={(materielUtilisable == compo.materiel) ? "bg-pink-900 pt-4" : "hidden" }>
+                    <div key={compo.id} className={(materielUtilisable == compo.materiel) ? "bg-pink-900 pt-2" : "hidden" }>
                         {compo.listeImg.map((item,index) => (
                             <ImageDraggable 
                                 key={compo.id+"imgdraggable"+item.nom} 
@@ -76,7 +79,7 @@ function DragAndDrop(){
             </div>
             <div className="col-span-5">
                 {(niveau != "niveau 1") &&<div className="bg-orange-500 h-16">construction association</div>}
-                <div className=" p-2 bg-blue-500 grid grid-cols-2 gap-3 min-h-96" ref={drop}>
+                <div className={(isOver ) ? "p-2 bg-green-500 grid grid-cols-2 gap-3 min-h-[450px]  md:min-h-[500px]" : " p-2 bg-blue-500 grid grid-cols-2 gap-3 min-h-[450px]  md:min-h-[500px]"} ref={drop}>
                 {listeComposantsCreeParLUtilisateur.map((compo)=>{
                     if (compo.listeImg.length >0){
                         return(

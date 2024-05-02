@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 //composant , interne au composant RegleAssociation, permettant d'afficher les images de ingredient/ressource nécessaire pour réaliser les exercices.
-function ListeImageParTypeRessource(props){
+function ListeImageParTypeRessource({categorie,typeRessource,listeImage }){
     return (
         <>
-        {props.listeImage.map((image,index) => {
+        {listeImage.map((image,index) => {
             return(
-                <img key={image+''+index} src={"/img/"+props.categorie+"/"+props.typeRessource+"/"+image} alt={"image "+image} className=" align-middle"></img>
+                <img key={image+''+index} src={"/img/"+categorie+"/"+typeRessource+"/"+image} alt={"image "+image} className=" align-middle"></img>
             )
         })}
         </>

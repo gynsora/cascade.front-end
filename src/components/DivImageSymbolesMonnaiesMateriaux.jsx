@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { ContexteRealisationExerciceAssociation } from "../utils/contexte/ContexteRealisationExerciceAssociation";
 
 
-//fonction permettant d'afficher l'image d'un materiel, d'un symboles ou d'une monnaies
+//fonction permettant d'afficher les images des materiaux, des symboles ou des monnaies en fonction de "l'étape de lexercice"
 function DivImageSymbolesMonnaiesMateriaux({item,etape}){
     const {donneesExerciceChoisi ,materielUtilisable, setMaterielUtilisable}= useContext(ContexteRealisationExerciceAssociation)
     // console.log(item)
