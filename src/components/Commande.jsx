@@ -22,18 +22,18 @@ function AffichageImagesComposantTailleSMetPlus({composant,categorie}){
 function Commande({composants,categorie}){
   //console.log(props.composants)
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 ">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 ">
             {composants.map((composant,index) => {
                 return (
                     <div key={composant.nom}>
-                        <div className="text-2xl p-2">{`${composant.qteOk} ${composant.nomAuPluriel}`}</div>
-                        <div className="grid grid-cols-1 items-center justify-center rounded-md  p-2 sm:grid-cols-5">
+                        <div className="hidden sm:block text-xl p-2">{`${composant.qteOk} ${composant.nomAuPluriel}`}</div>
+                        <div className="grid grid-cols-1 items-center justify-center rounded-md  p-1 sm:grid-cols-5 sm:p-2" >
                             <AffichageImagesComposantTailleSMetPlus composant={composant} categorie={categorie}/>
-                            <div className="grid grid-cols-3 gap-2  p-2 sm:hidden">
-                                <div className=" p-1 sm:hidden">
+                            <div className="grid grid-cols-3 gap-1   sm:p-2 sm:hidden">
+                                <div className="col-span-2 p-1 sm:hidden">
                                     <img src={"/img/"+categorie+"/composants/"+composant.img} alt={"yahou"}/>
                                 </div>
-                                <div className=" p-2 col-span-2 sm:block text-lg py-8">{`X ${composant.qteOk}`}</div>
+                                <div className=" p-2 text-base sm:block sm:text-lg py-8">{`X ${composant.qteOk}`}</div>
                             </div>
                         </div>
                     </div>

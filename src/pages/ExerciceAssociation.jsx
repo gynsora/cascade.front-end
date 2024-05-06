@@ -14,6 +14,7 @@ import DivListeSymboleMonnaieMateriaux from "../components/DivListeSymboleMonnai
 import DragAndDrop from "../components/DragAndDrop";
 import Commande from "../components/Commande";
 import RegleAssociation from "../components/RegleAssociation";
+import DivModal from "../components/DivModal";
 
 
 
@@ -42,12 +43,22 @@ function ExerciceAssociation() {
     const [donneeImagesComposantDragAndDrop,setDonneeImagesComposantDragAndDrop]= useState(); //permet de cree un liste d'image(pour chaque composant), cest images seront mis dans un ordre random 
 
     const [etapeExercice,setEtapeExercice] = useState(''); //permet de gerer le niveau de ressource de l'exercice: symbole, monnaie , materiaux, composants 
-    const [modelAssocitation,setModelAssocitation] = useState(); //ce useState créer un objet contenant les règles d'association, permettant de créer un composant choisi. cela servira de comparaison avec le model que l'enfant créera durant l'exercice (constructionRegleAssociation).
-    const [constructionModelAssociation, setConstructionModelAssociation] = useState(); // ce useState servira pour que l'enfant puisse voir les regles d'association qu'il créera et pour si il fait erreur ou non
+    const [modelAssocitation,setModelAssocitation] = useState(null); //ce useState créer un objet contenant les règles d'association, permettant de créer un composant choisi. cela servira de comparaison avec le model que l'enfant créera durant l'exercice (constructionRegleAssociation).
+    const [constructionModelAssociation, setConstructionModelAssociation] = useState(null); // ce useState servira pour que l'enfant puisse voir les regles d'association qu'il créera et pour si il fait erreur ou non
     const [materielUtilisable, setMaterielUtilisable] = useState(""); // contiendra le nom du matériel disponible après avoir reussi à construire un model d'association complet et correct
+    
+    const [ouvrirModalExplicationCommande, setOuvrirModalExplicationCommande] = useState(false); // contindra un booléen qui permettra de savoir si la modal permettant de faire apparaitre la "commande" à réaliser pour l'exercice
+    const [ouvrirModalRegleAssociation, setOuvrirModalRegleAssociation] = useState(false); //contiendra un booléen qui permettra de savoir si la modal permettant de faire apparaitre les "règles d'association" de l'exercice
     
     const [listeComposantsCreeParLUtilisateur,setlisteComposantsCreeParLUtilisateur] = useState()//liste composant créer durant l'exercice par l'utilisateur
 
+    const [infoResultatExercice, setInfoResultatExercice] = useState({
+        "nbConsultationsCommande" : 0,
+        "nbConsultationsRegleAssociation" : 0,
+        "tempsRealisationExercice": 0
+
+    })//contiendra un objet permetttant d'enregistrer les resultats de l'exerice
+    
     useEffect(() => {
         let isCancelled = false
         //a remplacer par le fetch data plus tard voir https://www.youtube.com/watch?v=QQYeipc_cik&list=LL&index=2&t=1142s
@@ -99,12 +110,27 @@ function ExerciceAssociation() {
         }
         fetchExerciceAssociation()
 
+        //reinitialisation des states ...
         return() =>{
             isCancelled = true
             document.title = ""
-            setMaterielUtilisable("")
-            setDonneesExerciceChoisi("")
             handleNomAudio("")
+            setDonneesExerciceChoisi("")
+            setPhase("")
+            setDonneeImagesComposantDragAndDrop(null)
+            setEtapeExercice("")
+            setModelAssocitation(null) 
+            setConstructionModelAssociation(null)
+            setMaterielUtilisable("")
+            setOuvrirModalExplicationCommande(false)
+            setOuvrirModalRegleAssociation(false)
+            setlisteComposantsCreeParLUtilisateur(null)
+            setInfoResultatExercice({
+                "nbConsultationsCommande" : 0,
+                "nbConsultationsRegleAssociation" : 0,
+                "tempsRealisationExercice": 0
+            })
+
         }
     },[categorie,niveau])
 
@@ -204,7 +230,6 @@ function ExerciceAssociation() {
         return nouvelleListeComposantCreerParLUtilisateur
     }
 
-    
 
     //fonction permettant d'ajouter des elements en fonction d'une regle d'association (cet element peut reprensenter un symbole, une monnaie , un materiaux)
     // pour les exercices de niveau 1 on n'affiche pas la liste d'association
@@ -239,6 +264,20 @@ function ExerciceAssociation() {
             }
         })
         return nouveauComposantModel
+    }
+
+    //fonction permettant de consulter la modal contenant la "commande" de l'exercice et de compter le nombre de fois ou l'utilisateur à consulter cette modal
+    function handleNbConsultationCommandeExercice(){
+        console.log('apparition modal commande + 1 ')
+        setInfoResultatExercice({...infoResultatExercice, "nbConsultationsCommande": infoResultatExercice.nbConsultationsCommande + 1})
+        setOuvrirModalExplicationCommande(true)
+    }
+
+    //fonction permettant de consulter la modal contenant "les règles d'associtaions" de l'exercice et de compter le nombre de fois ou l'utilisateur à consulter cette modal
+    function handleNbConsultationRegleAssociation(){
+        console.log('apparition modal regle association + 1 ')
+        setInfoResultatExercice({...infoResultatExercice, "nbConsultationsRegleAssociation": infoResultatExercice.nbConsultationsRegleAssociation + 1})
+        setOuvrirModalRegleAssociation(true)
     }
 
 
@@ -298,7 +337,7 @@ function ExerciceAssociation() {
     }
 
     //cree un div pour afficher l'interface permettant à l'éleve de réaliser sont exercice
-    if(phase =='realisationExercice' ){
+    if(phase == 'realisationExercice' ){
         return (
             <ContexteRealisationExerciceAssociation.Provider 
                 value={{
@@ -314,9 +353,10 @@ function ExerciceAssociation() {
             >
                 <main className="min-h-screen py-32 sm:py-32 lg:py-42 " >
                     <div className="text-green-500 py-3 px-3">{donneesExerciceChoisi.txtExplicationExercice}</div>
+
                     <div className="mx-auto max-w-6xl ">
                         <div className="grid grid-cols-9 gap-2 ">
-                            <div className="col-span-3  bg-red-400 p-1 ">
+                            <div className="col-span-3 bg-red-400 p-1 ">
                                 <DivListeSymboleMonnaieMateriaux />
                             </div>
                             <div className="grid grid-cols-6 col-span-6 bg-yellow-400 p-1">
@@ -324,8 +364,37 @@ function ExerciceAssociation() {
                             </div>
                         </div>
                     </div>
-                    <div>PREPARATION MODAL</div>
-                    <div className="mx-auto max-w-6xl ">
+                    
+                    <div className="mx-auto max-w-6xl mt-5">
+                        <div className="flex align-end justify-end justify-items-end ">
+                            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={()=>handleNbConsultationCommandeExercice()}>
+                                REVOIR LA COMMANDE 
+                            </button>
+                            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={()=>handleNbConsultationRegleAssociation()}>
+                                REVOIR LA REGLE 
+                            </button>
+                            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={()=>setPhase("validationExercice")}>
+                                VALIDER {`>`} 
+                            </button>
+                        </div>
+                    </div>
+
+                    <DivModal 
+                        ouvrirModal={ouvrirModalExplicationCommande} 
+                        setOuvrirModal={setOuvrirModalExplicationCommande}
+                        titre={"Information commande"}
+                    >
+                       <Commande 
+                            composants={donneesExerciceChoisi.composants} 
+                            categorie={donneesExerciceChoisi.categorie}
+                        />
+                    </DivModal>
+
+                    <DivModal 
+                        ouvrirModal={ouvrirModalRegleAssociation} 
+                        setOuvrirModal={setOuvrirModalRegleAssociation}
+                        titre={"Règle d'association"}
+                    >
                         <RegleAssociation  
                             detailComposantExercice={
                                 {  
@@ -335,16 +404,25 @@ function ExerciceAssociation() {
                                 }
                             }
                         />
-                    </div>
-                    <div className="mx-auto max-w-6xl ">
-                        <Commande 
-                            composants={donneesExerciceChoisi.composants} 
-                            categorie={donneesExerciceChoisi.categorie}
-                        />
-                    </div>
+                    </DivModal>
 
                 </main>
             </ContexteRealisationExerciceAssociation.Provider>
+        )
+    }
+
+    //cree un div pour afficher l'interface permettant à l'éleve de voir si il a réaliser l'exercice correctement ou pas
+    if(phase == 'validationExercice'){
+        return (
+            <main className="min-h-screen py-32 sm:py-32 lg:py-42 " >
+                nb  consultations commande  {infoResultatExercice.nbConsultationsCommande}
+                <br />
+                nb consultations regles {infoResultatExercice.nbConsultationsRegleAssociation}
+                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={()=>setPhase("realisationExercice")}>
+                {`<`}  RETOUR EXERCICE 
+                </button>
+            </main>
+
         )
     }
 }

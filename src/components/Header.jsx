@@ -5,13 +5,13 @@ import { ContexteAudio } from "../utils/contexte/ContexteAudio";
 
 import { SpeakerWaveIcon , SpeakerXMarkIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/16/solid" ;
 
-import imgLogo from '../assets/img/haarp_logo.png';
+import imgLogo from '../assets/img/epmi_logo.png';
 
 
 //composant, interne au header, permettant d'afficher le logo du site sur le header
 function Logo(){
   return(
-      <div className="md:justify-end logo h-14 w-14 bg-white p-1 rounded-md mr-1 pt-2">
+      <div className="md:justify-end logo h-14 w-14 bg-white p-1  mr-1 pt-2">
           <img src={imgLogo} /> 
       </div>
   );

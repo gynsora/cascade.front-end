@@ -28,7 +28,10 @@ function DivImageSymbolesMonnaiesMateriaux({item,etape}){
                             :"p-1 border-2 rounded-md border-pink-900              cursor-pointer  flex justify-center items-center  hover:border-green-500"
                         }
             onClick={()=>handleConstructionModelAssociation(item)}>
-            <img src={`img/${donneesExerciceChoisi.categorie}/${etape}/${item.img}`} />
+                <img 
+                    src={`img/${donneesExerciceChoisi.categorie}/${etape}/${item.img}`} 
+                   
+                />
         </div>
     )
 }

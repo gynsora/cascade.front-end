@@ -111,7 +111,7 @@ export const DonneeExercices = [
                     "coutComposant" :[
                         {"ressource": "composants", "listeImg":["sucre.png"], "texte":"sucre"},
                         {"ressource":"materiaux","listeImg": ["canneASucre.png"], "texte":"de la canne a sucre"},
-                        {"ressource":"monnaies","listeImg": ["pieceBlue.png"]},
+                        {"ressource":"monnaies","listeImg": ["pieceBleu.png"]},
                         {"ressource":"symboles","listeImg":[]}
                     ] 
                 }, 
@@ -212,8 +212,8 @@ export const DonneeExercices = [
                     "utilisable": true 
                 },
                 {
-                    "nom": "piece blue",
-                    "img": "pieceBlue.png",
+                    "nom": "piece bleu",
+                    "img": "pieceBleu.png",
                     "utilisable": true 
                 }
                 ,
