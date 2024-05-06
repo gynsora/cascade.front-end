@@ -24,7 +24,7 @@ function DragAndDrop(){
         // console.log(donneesExerciceChoisi.categorie)
         // console.log('dropover')
         if(item.materiel == item.materielCompo){
-            console.log('youpi ?')
+            //console.log('youpi ?')
             //console.log(item)
             //console.log(listeComposantsCreeParLUtilisateur)
             // Créez une copie de la liste d'objets

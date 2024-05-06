@@ -1,4 +1,4 @@
-import {  useEffect, useState, useContext } from "react";
+import {  useEffect, useState, useContext, useRef  } from "react";
 import { Navigate, useParams } from "react-router-dom";
 
 //DONNEES LIER A LAFFICHAGE DES EXERCICES A CHANGER PAR UN FETCH DATA
@@ -59,6 +59,15 @@ function ExerciceAssociation() {
 
     })//contiendra un objet permetttant d'enregistrer les resultats de l'exerice
     
+    const [qteCompoExerciceEgalQteCompoUtilisateur, setQteCompoExerciceEgalQteCompoUtilisateur ] = useState(false) //boléen pour savoir si la liste des composant créer par l'utilisateur est égal à la liste des composants de l'exercice à réaliser
+
+    // Utilisation de useRef pour stocker la valeur actuelle du timer
+    const secondsRef = useRef(0);
+
+    // État pour contrôler le démarrage/arrêt du timer
+    const [isRunning, setIsRunning] = useState(true);
+
+    //chargement des données de l'exercices
     useEffect(() => {
         let isCancelled = false
         //a remplacer par le fetch data plus tard voir https://www.youtube.com/watch?v=QQYeipc_cik&list=LL&index=2&t=1142s
@@ -130,25 +139,59 @@ function ExerciceAssociation() {
                 "nbConsultationsRegleAssociation" : 0,
                 "tempsRealisationExercice": 0
             })
+            setQteCompoExerciceEgalQteCompoUtilisateur(false)
+            setIsRunning(true)
+            secondsRef.current = 0;
 
         }
     },[categorie,niveau])
 
-    //permet de manipuler le son en fonction des phases de l'exercice
+    //permet de manipuler le son en fonction des phases de l'exercice et de l'exercice si l'utilisateur à reussi finir l'exercice le timer s'arrete
     useEffect(() => {
-        if(phase == "explicationCommande" && donneesExerciceChoisi ){
+        if(phase == "explicationCommande" && donneesExerciceChoisi != "" ){
             handleNomAudio(donneesExerciceChoisi?.sndCommandeExerciceAssociation)
         }
-        if(phase == "explicationRegle" && donneesExerciceChoisi){
+        if(phase == "explicationRegle" && donneesExerciceChoisi != "" ){
             handleNomAudio(donneesExerciceChoisi?.sndRegleAssociation)
         }
-        if(phase == "realisationExercice" && donneesExerciceChoisi){
+        if(phase == "realisationExercice" && donneesExerciceChoisi != "" ){
             handleNomAudio(donneesExerciceChoisi?.sndExplicationExercice)
         }
-        if(phase == "explicationRegle" && donneesExerciceChoisi){
+        if(phase == "explicationRegle" && donneesExerciceChoisi != "" ){
             handleNomAudio(donneesExerciceChoisi.sndRegleAssociation)
         }
+        if(phase == "validationExercice" && (donneesExerciceChoisi != "") ){
+            if(qteCompoExerciceEgalQteCompoUtilisateur){
+                handleNomAudio(donneesExerciceChoisi.sndValidationExerciceAssociationOk)
+            }
+            else{
+                handleNomAudio(donneesExerciceChoisi.sndValidationExerciceAssociationKo)
+            }
+            
+        }
     }, [phase,categorie,niveau]);
+
+    //permet de gerer le timer de l'exercice
+    // Utilisation de useEffect pour démarrer le timer lors du rendu initial
+    useEffect(() => { //ATTENTION LORS DU FETCH A ATTENDRE LA REQUETE POUR DEMARRER LE TIMER
+        let timerId;
+        // Vérification si le timer doit continuer à s'exécuter
+        if (isRunning) {
+        timerId = setInterval(() => {
+            secondsRef.current += 1;
+            // Mise à jour de l'affichage du timer
+            console.log("Timer: ", secondsRef.current);
+        }, 1000);
+        }
+        // Nettoyage du timer lors du démontage du composant ou lorsque le timer est arrêté
+        return () => clearInterval(timerId);
+    }, [isRunning,categorie,niveau]); // Le useEffect se déclenche lorsque isRunning change
+
+    // Fonction pour arrêter le timer
+    // function stopTimer() {
+    //     setIsRunning(false);
+    //     secondsRef.current = 0
+    // };
 
     //fonction permettant d'initialiser les données de l'exercice d'association choisi
     function handleInitialisationExerciceChoisi( ressourcemax, donneeInitaleExerciceChoisi){
@@ -231,6 +274,8 @@ function ExerciceAssociation() {
     }
 
 
+
+    ///USELESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs
     //fonction permettant d'ajouter des elements en fonction d'une regle d'association (cet element peut reprensenter un symbole, une monnaie , un materiaux)
     // pour les exercices de niveau 1 on n'affiche pas la liste d'association
     function handleConstructionModelAssociation(element){//AAAAAAA FAIRE
@@ -250,8 +295,6 @@ function ExerciceAssociation() {
             //console.log(rechercheMaterielDuComposant)
         }
     }
-
-  
 
     //cette fonction renvera un objet "composant" en fonction de l'étape de l'exercice et du tableau d'image mit en paramètre
     function rechercheComposantModelAssociation(tableauDimg){
@@ -279,6 +322,46 @@ function ExerciceAssociation() {
         setInfoResultatExercice({...infoResultatExercice, "nbConsultationsRegleAssociation": infoResultatExercice.nbConsultationsRegleAssociation + 1})
         setOuvrirModalRegleAssociation(true)
     }
+    //fonction permettant de mettre a jour le temps que l'utilisateur à mis pour reussir l'exercice
+    function handleTempsRealisationExercice(){
+        console.log('temps mis pour reussir exercice en seconde')
+        setInfoResultatExercice({...infoResultatExercice, "tempsRealisationExercice": secondsRef.current})
+    }
+
+    //fonction permettant de parametrer les useState nécessaire pour afficher la phase "validationExercice" correctement.
+    function handleParametresPhaseValidationExercice(){
+        const bonneQteDeComposants = comparerQteListeCompoExerciceEtListeCompoCreerParLUtilisateur()
+        //console.log(bonneQteDeComposants)
+        setQteCompoExerciceEgalQteCompoUtilisateur(bonneQteDeComposants)
+        if(bonneQteDeComposants){
+            handleTempsRealisationExercice()
+        }
+        setPhase("validationExercice")
+    } 
+
+    //fonction  permettant de comparer la liste des composant de l'exercice et la liste des composants créer par l'utilisateur (renvoi vrai ou faux)
+    //compte les quantité de chaque composant des 2 liste, si les quantité ne correspondent pas on ajouter 1 au compteur "resultatComparaison"
+    //tant que les quatites sont identiques le compteur reste à zero
+    //la fonction renvoie vrai quand le compteur est à zero (car les quantité de chaque elements 2 listes sont identiques)
+    function comparerQteListeCompoExerciceEtListeCompoCreerParLUtilisateur(){
+        let resultatComparaison = 0 ;
+        if(donneesExerciceChoisi.composants && listeComposantsCreeParLUtilisateur){
+            //console.log(listeComposantsCreeParLUtilisateur)
+            //console.log(donneesExerciceChoisi.composants )
+            {donneesExerciceChoisi.composants.map((composant)=>{
+                const composantChoisi = listeComposantsCreeParLUtilisateur.find(compo => compo.nom === composant.nom);
+                //console.log(composantChoisi.listeImg.length)
+                //console.log(composant.qteOk)
+                if(composantChoisi.listeImg.length != composant.qteOk){
+                    resultatComparaison++
+                }
+            })}
+        }
+        //console.log(resultatComparaison)
+        return (resultatComparaison == 0 ) ? true : false
+      
+    }
+
 
 
     //redirige l'utilisateur vers la page not found si les fetch dans useEffect ne renvoi rien ou genere une erreur
@@ -373,7 +456,7 @@ function ExerciceAssociation() {
                             <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={()=>handleNbConsultationRegleAssociation()}>
                                 REVOIR LA REGLE 
                             </button>
-                            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={()=>setPhase("validationExercice")}>
+                            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={()=>handleParametresPhaseValidationExercice()}>
                                 VALIDER {`>`} 
                             </button>
                         </div>
@@ -418,6 +501,12 @@ function ExerciceAssociation() {
                 nb  consultations commande  {infoResultatExercice.nbConsultationsCommande}
                 <br />
                 nb consultations regles {infoResultatExercice.nbConsultationsRegleAssociation}
+                <br />
+                temps mis pour reussir l'exercice {infoResultatExercice.tempsRealisationExercice}
+                <br />
+
+                liste Ok ? {}
+                afficher le bouton "retour exercice que si l'exo n'est pas fini"
                 <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={()=>setPhase("realisationExercice")}>
                 {`<`}  RETOUR EXERCICE 
                 </button>
