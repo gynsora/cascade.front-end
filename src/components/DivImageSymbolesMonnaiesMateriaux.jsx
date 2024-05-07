@@ -13,7 +13,7 @@ function DivImageSymbolesMonnaiesMateriaux({item,etape}){
     //attention les exercices d'association de niveau 1 ne nécessite pas de construire les regles d'association, on créer un comportement différent à ce moment la
     function handleConstructionModelAssociation(item){
         if(item.utilisable && (materielUtilisable != item.nom) && donneesExerciceChoisi.ressourceMax == "materiaux"){ 
-            console.log('nouveau matériel utilisable niveau1 ')
+            //console.log('nouveau matériel utilisable niveau1 ')
             setMaterielUtilisable(item.nom)
         }
         if(!item.utilisable && donneesExerciceChoisi.ressourceMax == "materiaux"){

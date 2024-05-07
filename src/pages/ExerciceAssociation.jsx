@@ -15,11 +15,17 @@ import DragAndDrop from "../components/DragAndDrop";
 import Commande from "../components/Commande";
 import RegleAssociation from "../components/RegleAssociation";
 import DivModal from "../components/DivModal";
+import TabResultatExoAssociation from "../components/TabResultatExoAssociation";
 
 
 
 //ce composant permet d'afficher la page d'un exercice d'association en fonction d'une categorie et d'un niveau passé en parametres
 function ExerciceAssociation() {
+
+    //******************************************************************************************************************
+    //    DECLARATIONS DES USESTATE ET USEREF 
+    //*******************************************************************************************************************/
+    
     //contient les données des exercices //A RETIRER APRES INTEGRATIONS BDD
     const donnesDeToutLesExercices = DonneeExercices ;
 
@@ -55,17 +61,22 @@ function ExerciceAssociation() {
     const [infoResultatExercice, setInfoResultatExercice] = useState({
         "nbConsultationsCommande" : 0,
         "nbConsultationsRegleAssociation" : 0,
+        "nbTentativeValidationExo":0,
         "tempsRealisationExercice": 0
 
     })//contiendra un objet permetttant d'enregistrer les resultats de l'exerice
     
-    const [qteCompoExerciceEgalQteCompoUtilisateur, setQteCompoExerciceEgalQteCompoUtilisateur ] = useState(false) //boléen pour savoir si la liste des composant créer par l'utilisateur est égal à la liste des composants de l'exercice à réaliser
+    const [qteCompoExerciceEgalQteCompoUtilisateur, setQteCompoExerciceEgalQteCompoUtilisateur ] = useState(false) //booléen pour savoir si la liste des composant créer par l'utilisateur est égal à la liste des composants de l'exercice à réaliser
 
     // Utilisation de useRef pour stocker la valeur actuelle du timer
     const secondsRef = useRef(0);
 
     // État pour contrôler le démarrage/arrêt du timer
     const [isRunning, setIsRunning] = useState(true);
+
+    //******************************************************************************************************************
+    //   DECLARATIONS DES USEEFFECT 
+    //*******************************************************************************************************************/
 
     //chargement des données de l'exercices
     useEffect(() => {
@@ -137,6 +148,7 @@ function ExerciceAssociation() {
             setInfoResultatExercice({
                 "nbConsultationsCommande" : 0,
                 "nbConsultationsRegleAssociation" : 0,
+                "nbTentativeValidationExo":0,
                 "tempsRealisationExercice": 0
             })
             setQteCompoExerciceEgalQteCompoUtilisateur(false)
@@ -180,12 +192,17 @@ function ExerciceAssociation() {
         timerId = setInterval(() => {
             secondsRef.current += 1;
             // Mise à jour de l'affichage du timer
-            console.log("Timer: ", secondsRef.current);
+            //console.log("Timer: ", secondsRef.current);
         }, 1000);
         }
         // Nettoyage du timer lors du démontage du composant ou lorsque le timer est arrêté
         return () => clearInterval(timerId);
     }, [isRunning,categorie,niveau]); // Le useEffect se déclenche lorsque isRunning change
+
+
+    //******************************************************************************************************************
+    //    FONCTIONS PERMETTANT DE GERER L'EXERCICE
+    //*******************************************************************************************************************/
 
     // Fonction pour arrêter le timer
     // function stopTimer() {
@@ -274,7 +291,6 @@ function ExerciceAssociation() {
     }
 
 
-
     ///USELESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs
     //fonction permettant d'ajouter des elements en fonction d'une regle d'association (cet element peut reprensenter un symbole, une monnaie , un materiaux)
     // pour les exercices de niveau 1 on n'affiche pas la liste d'association
@@ -311,21 +327,27 @@ function ExerciceAssociation() {
 
     //fonction permettant de consulter la modal contenant la "commande" de l'exercice et de compter le nombre de fois ou l'utilisateur à consulter cette modal
     function handleNbConsultationCommandeExercice(){
-        console.log('apparition modal commande + 1 ')
+        //console.log('apparition modal commande + 1 ')
         setInfoResultatExercice({...infoResultatExercice, "nbConsultationsCommande": infoResultatExercice.nbConsultationsCommande + 1})
         setOuvrirModalExplicationCommande(true)
     }
 
     //fonction permettant de consulter la modal contenant "les règles d'associtaions" de l'exercice et de compter le nombre de fois ou l'utilisateur à consulter cette modal
     function handleNbConsultationRegleAssociation(){
-        console.log('apparition modal regle association + 1 ')
+        //console.log('apparition modal regle association + 1 ')
         setInfoResultatExercice({...infoResultatExercice, "nbConsultationsRegleAssociation": infoResultatExercice.nbConsultationsRegleAssociation + 1})
         setOuvrirModalRegleAssociation(true)
     }
-    //fonction permettant de mettre a jour le temps que l'utilisateur à mis pour reussir l'exercice
-    function handleTempsRealisationExercice(){
-        console.log('temps mis pour reussir exercice en seconde')
-        setInfoResultatExercice({...infoResultatExercice, "tempsRealisationExercice": secondsRef.current})
+    //fonction  permettant de consulter le nombre de fois l'eleve à tenter de valider l'exercice
+    function handleNbTentativeValidationExo(){
+        //console.log('nombre essai validation exo + 1 ')
+        setInfoResultatExercice({...infoResultatExercice, "nbTentativeValidationExo": infoResultatExercice.nbTentativeValidationExo + 1})
+    }
+    //fonction permettant de mettre a jour le temps que l'utilisateur à mis pour reussir l'exercice et ajoute 1 tentative de validation exo
+    function handleTempsRealisationExerciceEtNbTentativeValidationExo(){
+        //console.log('temps mis pour reussir exercice en seconde et ajout 1 tentative')
+       
+        setInfoResultatExercice({...infoResultatExercice, "tempsRealisationExercice": secondsRef.current, "nbTentativeValidationExo": infoResultatExercice.nbTentativeValidationExo + 1})
     }
 
     //fonction permettant de parametrer les useState nécessaire pour afficher la phase "validationExercice" correctement.
@@ -334,7 +356,10 @@ function ExerciceAssociation() {
         //console.log(bonneQteDeComposants)
         setQteCompoExerciceEgalQteCompoUtilisateur(bonneQteDeComposants)
         if(bonneQteDeComposants){
-            handleTempsRealisationExercice()
+            handleTempsRealisationExerciceEtNbTentativeValidationExo()
+        }
+        else{
+            handleNbTentativeValidationExo()
         }
         setPhase("validationExercice")
     } 
@@ -362,7 +387,9 @@ function ExerciceAssociation() {
       
     }
 
-
+    //******************************************************************************************************************
+    //    AFFICHAGE PAGE EN FONCTION DE LA PHASE DE L'EXERCICE
+    //*******************************************************************************************************************/
 
     //redirige l'utilisateur vers la page not found si les fetch dans useEffect ne renvoi rien ou genere une erreur
     if (error) {
@@ -498,18 +525,38 @@ function ExerciceAssociation() {
     if(phase == 'validationExercice'){
         return (
             <main className="min-h-screen py-32 sm:py-32 lg:py-42 " >
-                nb  consultations commande  {infoResultatExercice.nbConsultationsCommande}
-                <br />
-                nb consultations regles {infoResultatExercice.nbConsultationsRegleAssociation}
-                <br />
-                temps mis pour reussir l'exercice {infoResultatExercice.tempsRealisationExercice}
-                <br />
+                <div className="mx-auto max-w-6xl text-center text-2xl py-9">
+                 Résultats
+                </div>
 
-                liste Ok ? {}
-                afficher le bouton "retour exercice que si l'exo n'est pas fini"
-                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={()=>setPhase("realisationExercice")}>
-                {`<`}  RETOUR EXERCICE 
-                </button>
+                <div className="max-w-3xl mx-auto ">
+                    <TabResultatExoAssociation 
+                        categorie={donneesExerciceChoisi.categorie}
+                        listeComposantsCreeParLUtilisateur={listeComposantsCreeParLUtilisateur}
+                        listeComposantExo={donneesExerciceChoisi.composants}
+                    />
+                </div>
+                {qteCompoExerciceEgalQteCompoUtilisateur ?
+                (<>
+                    <div className="pt-5 text-center text-green-500 sm:text-xl md:text-2xl">{donneesExerciceChoisi.txtValidationExerciceAssociationOk}</div>
+                    <div className="mt-5  text-center color-green-500 bg-green-200  sm:text-xl "> 
+                        {infoResultatExercice.nbTentativeValidationExo} essai{`(`}s{`)`} en {infoResultatExercice.tempsRealisationExercice} s - {infoResultatExercice.nbConsultationsRegleAssociation} règle{`(`}s{`)`} - {infoResultatExercice.nbConsultationsCommande} commande{`(`}s{`)`} .
+                    </div>
+                </>
+                )
+                :(  
+                    <>
+                    <div className="pt-5 text-center text-red-500 sm:text-xl md:text-2xl">{donneesExerciceChoisi.txtValidationExerciceAssociationKo}</div>
+                    <div className="mx-auto max-w-6xl mt-5">
+                        <div className="flex align-end justify-end justify-items-end ">
+                            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={()=>setPhase("realisationExercice")}>
+                                {`<`}  RETOUR EXERCICE 
+                            </button>
+                        </div>
+                    </div>
+                    </>
+                )}
+               
             </main>
 
         )
