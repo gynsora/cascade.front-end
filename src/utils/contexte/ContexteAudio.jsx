@@ -18,6 +18,7 @@ export const AudioProvider = ({ children }) => {
         audio.play();
       }
       return() =>{
+        //audio.pause();
         audio.src = ""
       }
     }, [nomAudio])

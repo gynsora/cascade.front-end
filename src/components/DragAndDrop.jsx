@@ -6,10 +6,10 @@ import {  useDrop } from "react-dnd";
 import ImageDraggable from "./ImageDraggable";
 
 function DragAndDrop(){
-    const {niveau,donneesExerciceChoisi,donneeImagesComposantDragAndDrop,materielUtilisable,listeComposantsCreeParLUtilisateur, setlisteComposantsCreeParLUtilisateur} = useContext(ContexteRealisationExerciceAssociation)
+    const {niveau,donneesExerciceChoisi,donneeImagesComposantDragAndDrop,materielUtilisable,listeComposantsCreeParLUtilisateur, setlisteComposantsCreeParLUtilisateur ,constructionModelAssociation} = useContext(ContexteRealisationExerciceAssociation)
     //console.log(donneeImagesComposantDragAndDrop)
     //console.log(donneesExerciceChoisi)
-   
+    console.log()
     let [{ isOver},drop] = useDrop(()=>({
         accept: "image",
         drop: (item)=> handleAjouterElementDansListeComposantsCreeParLUtilisateur(item),
@@ -78,7 +78,14 @@ function DragAndDrop(){
                 })}
             </div>
             <div className="col-span-5">
-                {(niveau != "niveau 1") &&<div className="bg-orange-500 h-16">construction association</div>}
+                {(niveau != "niveau 1") &&
+                    <div className="bg-orange-500 h-16">
+                    construction association
+                    <DivConstructionModelAssociation 
+                        constructionModelAssociation={constructionModelAssociation}
+                    />
+                    </div>
+                }
                 <div className={(isOver ) ? "p-2 bg-green-500 grid grid-cols-2 gap-3 min-h-[450px]  md:min-h-[500px]" : " p-2 bg-blue-500 grid grid-cols-2 gap-3 min-h-[450px]  md:min-h-[500px]"} ref={drop}>
                 {listeComposantsCreeParLUtilisateur.map((compo)=>{
                     if (compo.listeImg.length >0){
@@ -108,4 +115,17 @@ function DragAndDrop(){
 } 
 
 export default DragAndDrop;
+
+//fonction permettant de créer la div qui affichera les regles d'association construite par l'utilisateur (exercice au dela du niveau 1)
+function DivConstructionModelAssociation({constructionModelAssociation}){
+    
+    
+    useEffect(() => { 
+        console.log('ziak')
+        console.log(constructionModelAssociation)
+    }, [constructionModelAssociation]); 
+    return (
+        <>plopli</>
+    )
+}
 

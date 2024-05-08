@@ -49,7 +49,7 @@ function ExerciceAssociation() {
     const [donneeImagesComposantDragAndDrop,setDonneeImagesComposantDragAndDrop]= useState(); //permet de cree un liste d'image(pour chaque composant), cest images seront mis dans un ordre random 
 
     const [etapeExercice,setEtapeExercice] = useState(''); //permet de gerer le niveau de ressource de l'exercice: symbole, monnaie , materiaux, composants 
-    const [modelAssocitation,setModelAssocitation] = useState(null); //ce useState créer un objet contenant les règles d'association, permettant de créer un composant choisi. cela servira de comparaison avec le model que l'enfant créera durant l'exercice (constructionRegleAssociation).
+    const [modelAssociation,setModelAssociation] = useState(null); //ce useState créer un objet contenant les règles d'association, permettant de créer un composant choisi. cela servira de comparaison avec le model que l'enfant créera durant l'exercice (constructionRegleAssociation).
     const [constructionModelAssociation, setConstructionModelAssociation] = useState(null); // ce useState servira pour que l'enfant puisse voir les regles d'association qu'il créera et pour si il fait erreur ou non
     const [materielUtilisable, setMaterielUtilisable] = useState(""); // contiendra le nom du matériel disponible après avoir reussi à construire un model d'association complet et correct
     
@@ -139,7 +139,7 @@ function ExerciceAssociation() {
             setPhase("")
             setDonneeImagesComposantDragAndDrop(null)
             setEtapeExercice("")
-            setModelAssocitation(null) 
+            setModelAssociation(null) 
             setConstructionModelAssociation(null)
             setMaterielUtilisable("")
             setOuvrirModalExplicationCommande(false)
@@ -181,6 +181,9 @@ function ExerciceAssociation() {
             }
             
         }
+        if(donneesExerciceChoisi == "" ){
+            handleNomAudio("EKO.mp3")
+        }
     }, [phase,categorie,niveau]);
 
     //permet de gerer le timer de l'exercice
@@ -219,9 +222,8 @@ function ExerciceAssociation() {
 
         setEtapeExercice(ressourcemax)
         //setMaterielUtilisable("du blé") //AAAAAAAAAAa mettre en commentaire
-        //setModelAssocitation("")
+        setModelAssociation("")
         setConstructionModelAssociation(constructionModelAssocitiationVide)
-        
         //initialisation des données d'images (liste d'images pour chaque composant) nécessaire pour le drag and drop (pour le côté des images Draggable)
         const tableauImagesPourDragAndDrop = handleInitialisationNouvellesListesRandomImagesRandom(donneeInitaleExerciceChoisi.composants)
         setDonneeImagesComposantDragAndDrop(tableauImagesPourDragAndDrop)
@@ -364,6 +366,16 @@ function ExerciceAssociation() {
         setPhase("validationExercice")
     } 
 
+    //fonction permettant de reinitialiser les useState en rapport avec la construction de model d'association (faite par l'utilisateur)
+    //cette fonction est seulement utilisé pour les exercice au dessus du niveau 1
+    function handleReinitialisationConstructionModelAssociation(){
+        setModelAssociation("")
+        setConstructionModelAssociation(constructionModelAssocitiationVide)
+        setEtapeExercice(donneesExerciceChoisi.ressourceMax)
+        setMaterielUtilisable("")
+    }
+
+
     //fonction  permettant de comparer la liste des composant de l'exercice et la liste des composants créer par l'utilisateur (renvoi vrai ou faux)
     //compte les quantité de chaque composant des 2 liste, si les quantité ne correspondent pas on ajouter 1 au compteur "resultatComparaison"
     //tant que les quatites sont identiques le compteur reste à zero
@@ -458,8 +470,12 @@ function ExerciceAssociation() {
                     materielUtilisable,setMaterielUtilisable,
                     listeComposantsCreeParLUtilisateur,
                     handleConstructionModelAssociation,
-                    setlisteComposantsCreeParLUtilisateur
-                     }}
+                    setlisteComposantsCreeParLUtilisateur,
+                    constructionModelAssociation,
+                    setConstructionModelAssociation,
+                    modelAssociation,
+                    setModelAssociation
+                    }}
             >
                 <main className="min-h-screen py-32 sm:py-32 lg:py-42 " >
                     <div className="text-green-500 py-3 px-3">{donneesExerciceChoisi.txtExplicationExercice}</div>
@@ -477,6 +493,11 @@ function ExerciceAssociation() {
                     
                     <div className="mx-auto max-w-6xl mt-5">
                         <div className="flex align-end justify-end justify-items-end ">
+                            {(niveau != "niveau 1") && 
+                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={()=>handleReinitialisationConstructionModelAssociation()}>
+                                    REVOIR LES PIECES
+                                </button>
+                            }
                             <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={()=>handleNbConsultationCommandeExercice()}>
                                 REVOIR LA COMMANDE 
                             </button>

@@ -32,8 +32,8 @@ function RegleAssociation({detailComposantExercice}){
                         //console.log(coutCompoRessourceActuel)
                         if(coutCompoRessourceActuel){
                             return (
-                                <div key={ressource+'listeImage'}  className="grid grid-cols-2  p-1 md:grid-cols-3 lg:grid-cols-4 ">
-                                    <div className ={ (ressource == "symboles" || ressource == "monnaies" ) ? 'grid h-full grid-cols-1 gap-1  p-1 md:col-span-2 md:grid-cols-2 align-middle p-1 items-center justify-center ' : 'grid h-full grid-cols-1 gap-1   p-1  items-center justify-center ' }>
+                                <div key={ressource+'listeImage'}  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+                                    <div className ={ (ressource == "symboles" || ressource == "monnaies" ) ? 'grid h-full grid-cols-1  md:col-span-2 md:grid-cols-2 align-middle items-center justify-center ' : 'grid h-full grid-cols-1     items-center justify-center ' }>
                                         <ListeImageParTypeRessource  
                                             categorie={categorieExercice}
                                             typeRessource={ressource}
