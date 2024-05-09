@@ -13,7 +13,7 @@ function DivListeSymboleMonnaieMateriaux(){
         <>
         {donneesExerciceChoisi.etapeRessource.map((etape)=>{
             return (
-            <div key={etape} className={(etapeExercice == etape) ? "bg-purple-500 p-4 grid grid-cols-3 gap-1" : "hidden" }>
+            <div key={etape} className={(etapeExercice == etape) ? " p-2 grid grid-cols-3 gap-1" : "hidden" }>
                
                 {donneesExerciceChoisi[etape].map((item,index) => (
                    <DivImageSymbolesMonnaiesMateriaux 

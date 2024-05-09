@@ -35,7 +35,7 @@ function Header() {
   
     return (
         <>
-        <header className="bg-green-600 shadow-md w-full fixed top-0 left-0 text-amber-50">
+        <header className="bg-green-600 shadow-md w-full fixed top-0 left-0 text-amber-50 z-10">
             <div className="md:flex items-center md:justify-between bg-green-600  py-4 md:px-10 px-7">
                 <Link to="/">
                     <div className='text-3xl cursor-pointer flex items-center  font-sans-serif'>

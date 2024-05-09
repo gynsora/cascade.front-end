@@ -37,14 +37,16 @@ function DivImageSymbolesMonnaiesMateriaux({item,etape}){
                 if(nouveauComposantModel){
                     console.log("composant Model trouvé")
                  
-                    setConstructionModelAssociation({
-                        ...constructionModelAssociation,
-                        [etapeExercice]:nouvelleContructionModelAssociation[etapeExercice]
-                    })
                     //setModelAssociation(nouveauComposantModel)
                    
                     const indexEtapeActuelle = donneesExerciceChoisi.etapeRessource.indexOf(etapeExercice)
                     setModelAssociation(nouveauComposantModel)
+                    
+                    setConstructionModelAssociation({
+                        ...constructionModelAssociation,
+                        [etapeExercice]:nouvelleContructionModelAssociation[etapeExercice]
+                    })
+                    
                     setEtapeExercice(donneesExerciceChoisi.etapeRessource[indexEtapeActuelle+1])
                 }
                 else{

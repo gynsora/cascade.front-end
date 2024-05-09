@@ -4,12 +4,14 @@ import {  useDrop } from "react-dnd";
 
 
 import ImageDraggable from "./ImageDraggable";
+import DivConstructionModelAssociation from "./DivConstructionModelAssociation";
 
 function DragAndDrop(){
-    const {niveau,donneesExerciceChoisi,donneeImagesComposantDragAndDrop,materielUtilisable,listeComposantsCreeParLUtilisateur, setlisteComposantsCreeParLUtilisateur ,constructionModelAssociation} = useContext(ContexteRealisationExerciceAssociation)
+    const {niveau,etapeExercice,donneesExerciceChoisi,donneeImagesComposantDragAndDrop,materielUtilisable,listeComposantsCreeParLUtilisateur, setlisteComposantsCreeParLUtilisateur ,constructionModelAssociation,modelAssociation} = useContext(ContexteRealisationExerciceAssociation)
     //console.log(donneeImagesComposantDragAndDrop)
     //console.log(donneesExerciceChoisi)
-    console.log()
+    //console.log(donneesExerciceChoisi)
+  
     let [{ isOver},drop] = useDrop(()=>({
         accept: "image",
         drop: (item)=> handleAjouterElementDansListeComposantsCreeParLUtilisateur(item),
@@ -58,11 +60,11 @@ function DragAndDrop(){
 
     return(
         <>
-            <div className="Pictures col-span-1 bg-green-500">  
+            <div className="Pictures col-span-1">  
                 {donneeImagesComposantDragAndDrop.map((compo)=>{
                     //console.log(compo)
                     return (
-                    <div key={compo.id} className={(materielUtilisable == compo.materiel) ? "bg-pink-900 pt-2" : "hidden" }>
+                    <div key={compo.id} className={(materielUtilisable == compo.materiel) ? "pt-2 " : "hidden" }>
                         {compo.listeImg.map((item,index) => (
                             <ImageDraggable 
                                 key={compo.id+"imgdraggable"+item.nom} 
@@ -77,22 +79,25 @@ function DragAndDrop(){
                     )
                 })}
             </div>
-            <div className="col-span-5">
+            <div className="col-span-9  ml-2">
                 {(niveau != "niveau 1") &&
-                    <div className="bg-orange-500 h-16">
-                    construction association
+                    <div className="bg-orange-100 h-18 ml-4 ">
                     <DivConstructionModelAssociation 
                         constructionModelAssociation={constructionModelAssociation}
+                        listeEtapes={donneesExerciceChoisi.etapeRessource}
+                        categorie={donneesExerciceChoisi.categorie}
+                        modelAssociation={modelAssociation}
+                        etapeExercice={etapeExercice}
                     />
                     </div>
                 }
-                <div className={(isOver ) ? "p-2 bg-green-500 grid grid-cols-2 gap-3 min-h-[450px]  md:min-h-[500px]" : " p-2 bg-blue-500 grid grid-cols-2 gap-3 min-h-[450px]  md:min-h-[500px]"} ref={drop}>
+                <div className={(isOver ) ? "p-4  ml-4 bg-green-200 border-2 border-green-500 grid grid-cols-2 gap-3 min-h-[300px]  md:min-h-[420px] lg:min-h-[450px]" : " p-4 ml-4 bg-yellow-100  border-2 border-green-500 grid grid-cols-2 gap-3 min-h-[300px]  md:min-h-[420px] lg:min-h-[450px]"} ref={drop}>
                 {listeComposantsCreeParLUtilisateur.map((compo)=>{
                     if (compo.listeImg.length >0){
                         return(
                             <div key={compo.nom} >
                                     <div>{compo.nom}  </div>
-                                    <div className="grid grid-cols-5">
+                                    <div className="grid grid-cols-6">
                                     {compo.listeImg.map((item,index) => ( 
                                         <div key={index+'a'+item.nom} 
                                             onClick={()=>handleEffacerElementDansListeComposantsCreeParLUtilisateur(item,compo)}
@@ -116,16 +121,5 @@ function DragAndDrop(){
 
 export default DragAndDrop;
 
-//fonction permettant de créer la div qui affichera les regles d'association construite par l'utilisateur (exercice au dela du niveau 1)
-function DivConstructionModelAssociation({constructionModelAssociation}){
-    
-    
-    useEffect(() => { 
-        console.log('ziak')
-        console.log(constructionModelAssociation)
-    }, [constructionModelAssociation]); 
-    return (
-        <>plopli</>
-    )
-}
+
 

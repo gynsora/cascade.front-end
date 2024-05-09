@@ -481,11 +481,11 @@ function ExerciceAssociation() {
                     <div className="text-green-500 py-3 px-3">{donneesExerciceChoisi.txtExplicationExercice}</div>
 
                     <div className="mx-auto max-w-6xl ">
-                        <div className="grid grid-cols-9 gap-2 ">
-                            <div className="col-span-3 bg-red-400 p-1 ">
+                        <div className="grid grid-cols-12 gap-2 ">
+                            <div className="col-span-3 p-1 ">
                                 <DivListeSymboleMonnaieMateriaux />
                             </div>
-                            <div className="grid grid-cols-6 col-span-6 bg-yellow-400 p-1">
+                            <div className="grid grid-cols-10 col-span-9 p-1 gap-1">
                             <DragAndDrop />
                             </div>
                         </div>
