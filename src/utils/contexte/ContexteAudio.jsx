@@ -19,6 +19,7 @@ export const AudioProvider = ({ children }) => {
       }
       return() =>{
         //audio.pause();
+        //setAudio(new Audio())
         audio.src = ""
       }
     }, [nomAudio])

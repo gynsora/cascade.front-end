@@ -7,13 +7,11 @@ function DivListeSymboleMonnaieMateriaux(){
     const {donneesExerciceChoisi, materielUtilisable,setMaterielUtilisable,etapeExercice,setEtapeExercice,handleConstructionModelAssociation} = useContext(ContexteRealisationExerciceAssociation)
   
   
-    
-
     return (
         <>
         {donneesExerciceChoisi.etapeRessource.map((etape)=>{
             return (
-            <div key={etape} className={(etapeExercice == etape) ? " p-2 grid grid-cols-3 gap-1" : "hidden" }>
+            <div key={etape} className={(etapeExercice == etape) ? " p-1 grid grid-cols-2  sm:grid-cols-3 sm:p-2 gap-1" : "hidden" }>
                
                 {donneesExerciceChoisi[etape].map((item,index) => (
                    <DivImageSymbolesMonnaiesMateriaux 

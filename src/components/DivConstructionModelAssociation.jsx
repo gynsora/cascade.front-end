@@ -1,5 +1,33 @@
 import {  useEffect } from "react";
-import comparerTableau from "../utils/fonctionGenerale/comparerTableau";
+
+
+//fonction permettant d'afficher les fleche a chaque changement de phase durant la construction du model d'association
+function FlecheInterEtape({modelAssociation,listeEtapes,etape,etapeExercice}){
+    if(modelAssociation){     
+        const indexEtape = listeEtapes.indexOf(etape)
+        //console.log(etapeExercice)
+        //console.log(indexEtape)
+        const indexEtapeExercice = listeEtapes.indexOf(etapeExercice)
+        //console.log(indexEtapeExercice)
+
+        if(indexEtape-indexEtapeExercice <= 0 && indexEtape != 0 ){
+           return <img key={etape+"-fleche"} src={`img/arrow1.png`} alt={`image fleche`} className="ml-1 w-8 md:w-12"/> 
+        }
+    }
+}
+//fonction permettant d'afficher les images lié a chaque ressource durant la construction du model d'association
+function ListeImageEtapeConstructionModelAssociation({constructionModelAssociation,etape,categorie}){
+    if(constructionModelAssociation[etape].length > 0){
+        return (
+            <span key={etape+'listeImages'} className="flex">
+                {constructionModelAssociation[etape].map((image,index)=>{
+                    return <img key={image+"-"+index} src={`img/${categorie}/${etape}/${image}`} alt={`image construction model association ${image}`} className="ml-1 w-8 md:w-12"/>
+                })}
+            </span> 
+        )
+    }
+
+}
 
 //fonction permettant de créer la div qui affichera les regles d'association construite par l'utilisateur (exercice au dela du niveau 1)
 function DivConstructionModelAssociation({constructionModelAssociation, listeEtapes,categorie,modelAssociation,etapeExercice}){
@@ -39,30 +67,3 @@ function DivConstructionModelAssociation({constructionModelAssociation, listeEta
 
 export default DivConstructionModelAssociation ;
 
-//fonction permettant d'afficher les fleche a chaque changement de phase durant la construction du model d'association
-function FlecheInterEtape({modelAssociation,listeEtapes,etape,etapeExercice}){
-    if(modelAssociation){     
-        const indexEtape = listeEtapes.indexOf(etape)
-        //console.log(etapeExercice)
-        //console.log(indexEtape)
-        const indexEtapeExercice = listeEtapes.indexOf(etapeExercice)
-        //console.log(indexEtapeExercice)
-
-        if(indexEtape-indexEtapeExercice <= 0 && indexEtape != 0 ){
-           return <img key={etape+"-fleche"} src={`img/arrow1.png`} alt={`image fleche`} className="w-8 md:w-12"/> 
-        }
-    }
-}
-//fonction permettant d'afficher les images lié a chaque ressource durant la construction du model d'association
-function ListeImageEtapeConstructionModelAssociation({constructionModelAssociation,etape,categorie}){
-    if(constructionModelAssociation[etape].length > 0){
-        return (
-            <span key={etape+'listeImages'} className="">
-                {constructionModelAssociation[etape].map((image,index)=>{
-                    return <img key={image+"-"+index} src={`img/${categorie}/${etape}/${image}`} alt={`image construction model association ${image}`} className="w-8 md:w-12"/>
-                })}
-            </span> 
-        )
-    }
-
-}

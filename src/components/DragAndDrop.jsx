@@ -60,11 +60,11 @@ function DragAndDrop(){
 
     return(
         <>
-            <div className="Pictures col-span-1">  
+            <div className="Pictures col-span-2 sm:col-span-1 ">  
                 {donneeImagesComposantDragAndDrop.map((compo)=>{
                     //console.log(compo)
                     return (
-                    <div key={compo.id} className={(materielUtilisable == compo.materiel) ? "pt-2 " : "hidden" }>
+                    <div key={compo.id} className={(materielUtilisable == compo.materiel) ? "pt-2" : "hidden" }>
                         {compo.listeImg.map((item,index) => (
                             <ImageDraggable 
                                 key={compo.id+"imgdraggable"+item.nom} 
@@ -79,7 +79,7 @@ function DragAndDrop(){
                     )
                 })}
             </div>
-            <div className="col-span-9  ml-2">
+            <div className="col-span-8 sm:col-span-9  ml-2">
                 {(niveau != "niveau 1") &&
                     <div className="bg-orange-100 h-18 ml-4 ">
                     <DivConstructionModelAssociation 
