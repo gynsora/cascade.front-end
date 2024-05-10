@@ -103,7 +103,7 @@ function DragAndDrop(){
                                             onClick={()=>handleEffacerElementDansListeComposantsCreeParLUtilisateur(item,compo)}
                                             className="cursor-pointer hover:border-2 border-red-500"
                                         >    
-                                            <img src={`img/${donneesExerciceChoisi.categorie}/composants/${item}`} />
+                                            <img src={process.env.PUBLIC_URL+`/img/${donneesExerciceChoisi.categorie}/composants/${item}`} />
                                         </div>
                                     ))}
                                     </div>

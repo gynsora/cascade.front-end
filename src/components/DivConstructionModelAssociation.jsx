@@ -11,7 +11,7 @@ function FlecheInterEtape({modelAssociation,listeEtapes,etape,etapeExercice}){
         //console.log(indexEtapeExercice)
 
         if(indexEtape-indexEtapeExercice <= 0 && indexEtape != 0 ){
-           return <img key={etape+"-fleche"} src={`img/arrow1.png`} alt={`image fleche`} className="ml-1 w-8 md:w-12"/> 
+           return <img key={etape+"-fleche"} src={process.env.PUBLIC_URL+`/img/arrow1.png`} alt={`image fleche`} className="ml-1 w-8 md:w-12"/> 
         }
     }
 }
@@ -21,7 +21,7 @@ function ListeImageEtapeConstructionModelAssociation({constructionModelAssociati
         return (
             <span key={etape+'listeImages'} className="flex">
                 {constructionModelAssociation[etape].map((image,index)=>{
-                    return <img key={image+"-"+index} src={`img/${categorie}/${etape}/${image}`} alt={`image construction model association ${image}`} className="ml-1 w-8 md:w-12"/>
+                    return <img key={image+"-"+index} src={process.env.PUBLIC_URL+`/img/${categorie}/${etape}/${image}`} alt={`image construction model association ${image}`} className="ml-1 w-8 md:w-12"/>
                 })}
             </span> 
         )

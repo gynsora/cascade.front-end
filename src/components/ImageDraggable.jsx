@@ -17,14 +17,14 @@ function ImageDraggable({id,img,nom, categorie,materiel,materielCompo}){
                 <img  
                     ref={drag} 
                     className={(isDragging) ? "p-1 cursor-pointer bg-green-500":"p-1 cursor-pointer hover:bg-yellow-200 "} 
-                    src={`img/${categorie}/composants/${img}`}
+                    src={process.env.PUBLIC_URL+`/img/${categorie}/composants/${img}`}
                 />
             </div>
            ) :(
             <div>
                 <img  
                     className={"p-1 cursor-pointer hover:bg-yellow-200"} 
-                    src={`img/${categorie}/composants/${img}`}
+                    src={process.env.PUBLIC_URL+`/img/${categorie}/composants/${img}`}
                 />
             </div>
            )

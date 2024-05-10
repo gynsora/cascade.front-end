@@ -13,7 +13,7 @@ export const AudioProvider = ({ children }) => {
      // console.log(audio.src)
       audio.src="";
       audio.pause();
-      audio.src = "/sound/"+nomAudio;
+      audio.src = process.env.PUBLIC_URL+"/sound/"+nomAudio;
       if(isPlaying){
         audio.play();
       }

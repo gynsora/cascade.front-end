@@ -89,7 +89,7 @@ function DivImageSymbolesMonnaiesMateriaux({item,etape}){
         donneesExerciceChoisi.composants.map((composantModel,index) => {
             const coutNouveauModel = composantModel.coutComposant.find((cout) => cout.ressource === etapeExercice )
             if (comparerTableau(tableauDimg, coutNouveauModel.listeImg) ){
-                console.log('youpi')
+                //console.log('youpi')
                 nouveauComposantModel = composantModel 
             }
         })
@@ -103,7 +103,7 @@ function DivImageSymbolesMonnaiesMateriaux({item,etape}){
                         }
             onClick={()=>handleConstructionModelAssociation(item)}>
                 <img 
-                    src={`img/${donneesExerciceChoisi.categorie}/${etape}/${item.img}`} 
+                    src={process.env.PUBLIC_URL+`/img/${donneesExerciceChoisi.categorie}/${etape}/${item.img}`} 
                    
                 />
         </div>

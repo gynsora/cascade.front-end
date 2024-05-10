@@ -6,7 +6,7 @@ function ListeImageParTypeRessource({categorie,typeRessource,listeImage }){
         <>
         {listeImage.map((image,index) => {
             return(
-                <img key={image+''+index} src={"/img/"+categorie+"/"+typeRessource+"/"+image} alt={"image "+image} className=" align-middle"></img>
+                <img key={image+''+index} src={process.env.PUBLIC_URL+"/img/"+categorie+"/"+typeRessource+"/"+image} alt={"image "+image} className=" align-middle"></img>
             )
         })}
         </>
@@ -47,7 +47,7 @@ function RegleAssociation({detailComposantExercice}){
                                     }
                                     { (ressource != "composants" ) &&
                                         <div className="h-full  p-1 py-5">
-                                            <img src="/img/arrow1.png" alt="Image 1" className="max-h-12 inline-block" />
+                                            <img src={process.env.PUBLIC_URL+"/img/arrow1.png"} alt="Image 1" className="max-h-12 inline-block" />
                                         </div>
                                     }
                                 </div> 
