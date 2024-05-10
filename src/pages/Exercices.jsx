@@ -42,7 +42,7 @@ function Exercices(){
                             <Link to={"/exercice-association/"+categorieExercice.categorie+"/"+exercice.niveau} key={`${exercice.niveau}`}>
                                 <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow border-2  hover:border-green-500  mx-auto cursor-pointer">
                                     <div className="flex flex-col items-center pb-10">
-                                        <img className="w-24 h-24 mb-3 rounded-full shadow-lg " src={process.env.PUBLIC_URL+'/img/'+categorieExercice.categorie+'/'+categorieExercice.imgCategorie} alt={'image de la categorie '+categorieExercice.categorie}/>
+                                        <img className="w-24 h-24 mb-3 rounded-full shadow-lg " src={'img/'+categorieExercice.categorie+'/'+categorieExercice.imgCategorie} alt={'image de la categorie '+categorieExercice.categorie}/>
                                         <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{categorieExercice.categorie}</h5>
                                         <span className="text-sm text-gray-500 dark:text-gray-400">{exercice.niveau}</span>
                                     </div>

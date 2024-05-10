@@ -9,7 +9,7 @@ function AffichageImagesComposantTailleSMetPlus({composant,categorie}){
         {items.map((item,index) => {
             return (
                 <div key={item+"-"+index} className="hidden sm:block">
-                    <img src={process.env.PUBLIC_URL+"/img/"+categorie+"/composants/"+item} alt={"yahou"}/>
+                    <img src={"img/"+categorie+"/composants/"+item} alt={"yahou"}/>
                 </div>
             ) 
         })}
@@ -31,7 +31,7 @@ function Commande({composants,categorie}){
                             <AffichageImagesComposantTailleSMetPlus composant={composant} categorie={categorie}/>
                             <div className="grid grid-cols-3 gap-1   sm:p-2 sm:hidden">
                                 <div className="col-span-2 p-1 sm:hidden">
-                                    <img src={process.env.PUBLIC_URL+"/img/"+categorie+"/composants/"+composant.img} alt={"yahou"}/>
+                                    <img src={"img/"+categorie+"/composants/"+composant.img} alt={"yahou"}/>
                                 </div>
                                 <div className=" p-2 text-base sm:block sm:text-lg py-8">{`X ${composant.qteOk}`}</div>
                             </div>
