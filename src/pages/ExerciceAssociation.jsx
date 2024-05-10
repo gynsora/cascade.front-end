@@ -320,7 +320,7 @@ function ExerciceAssociation() {
         donneesExerciceChoisi.composants.map((composantModel,index) => {
             const coutNouveauModel = composantModel.coutComposant.find((cout) => cout.ressource === etapeExercice )
             if (comparerTableau(tableauDimg, coutNouveauModel.listeImg) ){
-                console.log('youpiz')
+                //console.log('youpiz')
                 nouveauComposantModel = composantModel 
             }
         })
