@@ -1,3 +1,4 @@
+//fonction permettant de créer un modal
 export default function DivModal({ children, titre, ouvrirModal , setOuvrirModal }) {
     return ( 
         <> 

@@ -8,6 +8,40 @@ const donnesExercice = DonneeExercices ;
 
 import { ContexteAudio } from "../utils/contexte/ContexteAudio";
 
+//fonction permettant d'afficher les card de chaque exercice, chaque card contient un lien vers un exercice
+function CardVersExercices({exercice,categorieExercice}){
+    
+    return (
+        <>
+        { (exercice.type == "association") &&   
+            <Link to={"/exercice-association/"+categorieExercice.categorie+"/"+exercice.niveau} key={`${exercice.niveau}`}>
+                <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow border-2  hover:border-green-500  mx-auto cursor-pointer">
+                    <div className="flex flex-col items-center pb-10">
+                        <img className="w-24 h-24 mb-3 rounded-full shadow-lg " src={'img/'+categorieExercice.categorie+'/'+categorieExercice.imgCategorie} alt={'image de la categorie '+categorieExercice.categorie}/>
+                        <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{categorieExercice.categorie}</h5>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">{exercice.niveau}</span>
+                    </div>
+                </div>
+            </Link>
+      
+        }
+
+        { (exercice.type == "QCM") &&   
+            <Link to={"/exercice-QCM/"+categorieExercice.categorie+"/"+exercice.niveau} key={`${exercice.niveau}`}>
+                <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow border-2  hover:border-green-500  mx-auto cursor-pointer">
+                    <div className="flex flex-col items-center pb-10">
+                        <img className="w-24 h-24 mb-3 rounded-full shadow-lg " src={'img/'+categorieExercice.categorie+'/'+categorieExercice.imgCategorie} alt={'image de la categorie '+categorieExercice.categorie}/>
+                        <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{categorieExercice.categorie}</h5>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">{exercice.niveau}</span>
+                    </div>
+                </div>
+            </Link>
+        }
+        </>
+    )
+}
+
+
 //composant permetttant d'afficher tous les exercices disponible sur le site
 function Exercices(){
     // on utilise le context audio pour changer le son, lors du chargement de la page 
@@ -38,20 +72,8 @@ function Exercices(){
                     <div className="px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 ">
                         {/* boucle pour parcourir chaques exercices appartenant à 1 catégorie*/ }
                         { categorieExercice.listeExercice.map((exercice ) => (
-                            /* mettre un if else en fonction du type d'exercice */
-                            <Link to={"/exercice-association/"+categorieExercice.categorie+"/"+exercice.niveau} key={`${exercice.niveau}`}>
-                                <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow border-2  hover:border-green-500  mx-auto cursor-pointer">
-                                    <div className="flex flex-col items-center pb-10">
-                                        <img className="w-24 h-24 mb-3 rounded-full shadow-lg " src={'img/'+categorieExercice.categorie+'/'+categorieExercice.imgCategorie} alt={'image de la categorie '+categorieExercice.categorie}/>
-                                        <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{categorieExercice.categorie}</h5>
-                                        <span className="text-sm text-gray-500 dark:text-gray-400">{exercice.niveau}</span>
-                                    </div>
-                                </div>
-                            </Link>
-                            
+                            <CardVersExercices key={exercice.niveau} exercice={exercice} categorieExercice={categorieExercice}/>
                        ))}
-                        
-                   
                     </div>
                 </section>
             ))}
@@ -63,3 +85,4 @@ function Exercices(){
 }
 
 export default Exercices;
+

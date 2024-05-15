@@ -25,7 +25,7 @@ function DivImageSymbolesMonnaiesMateriaux({item,etape}){
         //permet de gerer les exercices au dela du niveau 1, lorsque l'etape de l'exercice n'est pas lié à la gestion des matériaux
         if(item.utilisable &&  donneesExerciceChoisi.ressourceMax != "materiaux" && etapeExercice != "materiaux"){
             //console.log(item)
-            console.log("az")
+            //console.log("az")
             const nouvelleContructionModelAssociation = constructionModelAssociation
             //console.log(nouvelleContructionModelAssociation)
             nouvelleContructionModelAssociation[etapeExercice].push(item.img)
@@ -35,7 +35,7 @@ function DivImageSymbolesMonnaiesMateriaux({item,etape}){
                 //permet de voir si constructionModelAssociation (contient un tableau d'image coreespondant à l'un des cout de compasant d'un composant)
                 const  nouveauComposantModel = rechercheComposantModelAssociation(nouvelleContructionModelAssociation[etapeExercice])
                 if(nouveauComposantModel){
-                    console.log("composant Model trouvé")
+                    //console.log("composant Model trouvé")
                  
                     //setModelAssociation(nouveauComposantModel)
                    

@@ -4,7 +4,7 @@ import DivImageSymbolesMonnaiesMateriaux from "./DivImageSymbolesMonnaiesMateria
 
 //permettant d'afficher les symbole, les monnaies et les materiaux en fonction de l'etape de l'exercice choisi
 function DivListeSymboleMonnaieMateriaux(){
-    const {donneesExerciceChoisi, materielUtilisable,setMaterielUtilisable,etapeExercice,setEtapeExercice,handleConstructionModelAssociation} = useContext(ContexteRealisationExerciceAssociation)
+    const {donneesExerciceChoisi, materielUtilisable,setMaterielUtilisable,etapeExercice,setEtapeExercice} = useContext(ContexteRealisationExerciceAssociation)
   
   
     return (

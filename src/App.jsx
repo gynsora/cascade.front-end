@@ -11,17 +11,18 @@ import NotFound from "./pages/NotFound";
 // import Inscription from "./pages/Inscription";
 import Exercices from "./pages/Exercices";
 import ExerciceAssociation from "./pages/ExerciceAssociation";
+import ExerciceQCM from "./pages/ExerciceQCM"
 
 function App() {
   return (
     <Routes>
       {/*<Route path='/inscription' element={<Inscription />} />*/}
       <Route path='/' element={<Home />} />
-       <Route path='/exercices' element={<Exercices />} />
+      <Route path='/exercices' element={<Exercices />} />
       <Route path='*' element={<NotFound />} />
       <Route path='/erreur-404' element={<NotFound />} /> 
       <Route path='/exercice-association/:categorie/:niveau' element={<ExerciceAssociation />} />
-      
+      <Route path='/exercice-QCM/:categorie/:niveau' element={<ExerciceQCM />} />
     </Routes>
   );  
 }

@@ -293,39 +293,6 @@ function ExerciceAssociation() {
     }
 
 
-    ///USELESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs
-    //fonction permettant d'ajouter des elements en fonction d'une regle d'association (cet element peut reprensenter un symbole, une monnaie , un materiaux)
-    // pour les exercices de niveau 1 on n'affiche pas la liste d'association
-    function handleConstructionModelAssociation(element){//AAAAAAA FAIRE
-        //permet de gerer les exercices d'association de niveau 1
-        if(element.utilisable && donneesExerciceChoisi.ressourceMax == "materiaux"){
-            console.log(materielUtilisable)
-            setMaterielUtilisable("waza")
-            // //setMaterielUtilisable(element.)
-            // console.log(donneesExerciceChoisi.composants)
-            // //console.log(element.img)
-            // let tabImgMateriel = [element.img]
-            // console.log(rechercheComposantModelAssociation(tabImgMateriel))
-            
-            // setMaterielUtilisable("du blé")
-          
-            //const rechercheMaterielDuComposant = donneesExerciceChoisi?.composants.coutComposant.find((compo) => compo.ressource === "materiaux" )
-            //console.log(rechercheMaterielDuComposant)
-        }
-    }
-
-    //cette fonction renvera un objet "composant" en fonction de l'étape de l'exercice et du tableau d'image mit en paramètre
-    function rechercheComposantModelAssociation(tableauDimg){
-        let nouveauComposantModel = ""
-        donneesExerciceChoisi.composants.map((composantModel,index) => {
-            const coutNouveauModel = composantModel.coutComposant.find((cout) => cout.ressource === etapeExercice )
-            if (comparerTableau(tableauDimg, coutNouveauModel.listeImg) ){
-                //console.log('youpiz')
-                nouveauComposantModel = composantModel 
-            }
-        })
-        return nouveauComposantModel
-    }
 
     //fonction permettant de consulter la modal contenant la "commande" de l'exercice et de compter le nombre de fois ou l'utilisateur à consulter cette modal
     function handleNbConsultationCommandeExercice(){
@@ -469,7 +436,6 @@ function ExerciceAssociation() {
                     donneeImagesComposantDragAndDrop,
                     materielUtilisable,setMaterielUtilisable,
                     listeComposantsCreeParLUtilisateur,
-                    handleConstructionModelAssociation,
                     setlisteComposantsCreeParLUtilisateur,
                     constructionModelAssociation,
                     setConstructionModelAssociation,

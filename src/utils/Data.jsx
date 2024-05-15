@@ -19,7 +19,9 @@ export const DonneeExercices = [
 
             //texte et son pour introduire l'exercice de type quizz (cette description apparaît pour les exercices de type quizz)
             "titreIntroductionExerciceQuizz": "Voilà, la tarte est faite, bravo !",
-            "txtIntroductionExerciceQuizz":"Maintenant il te faut le couteau pour pouvoir la couper. Mais je ne vais pas donner cette possibilité à n'importe qui !<br/>Pour savoir que c'est bien ta tarte, tu dois essayer de répondre à quelques questions.<br/><br/>Clique sur Quizz ou sur Vrai ou faux",
+            "txtIntroductionExerciceQuizz": ["Maintenant il te faut le couteau pour pouvoir la couper. Mais je ne vais pas donner cette possibilité à n'importe qui !",
+                                                "Pour savoir que c'est bien ta tarte, tu dois essayer de répondre à quelques questions.",
+                                                "Clique sur Quizz ou sur Vrai ou faux"],
             "sndIntroductionExerciceQuizz":"cascade10.mp3",
 
             //texte et son pour valider l'exercice de type quizz  (cette description apparaît pour les exercices de type quizz)
@@ -44,6 +46,14 @@ export const DonneeExercices = [
                     "txtExplicationExercice":"Pour obtenir un ingrédient clique d'abord sur un euro puis sur l'image correspondante. Pour accéder au produit dont tu as besoin. Dès que tu auras stocké les quantités nécessaires à la commande, valide le résultat.",
                     "sndExplicationExercice": "cascade6.mp3", 
                     "ressourceMax": "monnaies",
+                    "etapeRessource": ["monnaies","materiaux","composants"]  
+                },
+                {
+                    "niveau": "QCM",
+                    "type": "QCM",
+                    "txtExplicationExercice":"Commencer le questionnaire à choix multiple",
+                    "sndExplicationExercice": "cascade6.mp3", 
+                    "ressourceMax": "composants",
                     "etapeRessource": ["monnaies","materiaux","composants"]  
                 }
             ],
@@ -232,7 +242,45 @@ export const DonneeExercices = [
             "symboles":[
             ],
             "quizzQCM":[
-
+                {
+                    "texteQuestion": "Quelle image fallait-il choisir pour obtenir de la farine ?",
+                    "sonQuestion":"cascade30.mp3",
+                    "typeQuestion":"images",
+                    "nbTentativeTotal":3,
+                    "choixReponse":[
+                        {"img":"canneASucre.png" ,"texte":"canne a sucre","ressource":"materiaux","reponseValide":false},
+                        {"img":"pommier.png" ,"texte":"pommier","ressource":"materiaux","reponseValide":false},
+                        {"img":"ble.png" ,"texte":"blé","ressource":"materiaux","reponseValide":true},
+                        {"img":"poule.png" ,"texte":"poule","ressource":"materiaux","reponseValide":false},
+                        {"img":"vache.png" ,"texte":"vache","ressource":"materiaux","reponseValide":false}
+                    ]
+                },
+                {
+                    "texteQuestion": "Quelle couleur n'existait pas dans les pièces ?",
+                    "sonQuestion":"cascade35.mp3",
+                    "typeQuestion":"images",
+                    "nbTentativeTotal":3,
+                    "choixReponse":[
+                        {"img":"pieceRouge.png" ,"texte":"pièce rouge","ressource":"monnaies","reponseValide":false},
+                        {"img":"pieceViolette.png" ,"texte":"pièce violette","ressource":"monnaies","reponseValide":true},
+                        {"img":"pieceJaune.png" ,"texte":"pièce jaune","ressource":"monnaies","reponseValide":false},
+                        {"img":"pieceVerte.png" ,"texte":"pièce verte","ressource":"monnaies","reponseValide":false},
+                        {"img":"pieceOrange.png" ,"texte":"pièce orange","ressource":"monnaies","reponseValide":false}
+                    ]
+                },
+                {
+                    "texteQuestion": "De combien de paquets de beurre avais-tu besoin ?",
+                    "sonQuestion":"cascade38.mp3",
+                    "typeQuestion":"chiffres",
+                    "nbTentativeTotal":3,
+                    "choixReponse":[
+                        {"chiffre":5 ,"reponseValide":true},
+                        {"chiffre":6 ,"reponseValide":false},
+                        {"chiffre":7 ,"reponseValide":false},
+                        {"chiffre":3 ,"reponseValide":false},
+                        {"chiffre":4 ,"reponseValide":false},
+                    ]
+                }
             ],
             "quizzVraiFaux":[
 
