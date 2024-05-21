@@ -18,6 +18,7 @@ function ImageDraggable({id,img,nom, categorie,materiel,materielCompo}){
                     ref={drag} 
                     className={(isDragging) ? "p-1 cursor-pointer bg-green-500":"p-1 cursor-pointer hover:bg-yellow-200 "} 
                     src={`img/${categorie}/composants/${img}`}
+                    alt={`image materiel: ${img}`}
                 />
             </div>
            ) :(
@@ -25,6 +26,7 @@ function ImageDraggable({id,img,nom, categorie,materiel,materielCompo}){
                 <img  
                     className={"p-1 cursor-pointer hover:bg-yellow-200"} 
                     src={`img/${categorie}/composants/${img}`}
+                    alt={`image materiel: ${img}`}
                 />
             </div>
            )

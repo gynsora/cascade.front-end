@@ -68,8 +68,8 @@ export const DonneeExercices = [
                     "coutComposant" :[
                         {"ressource": "composants", "listeImg":["pomme.png"], "texte":"pomme"},
                         {"ressource": "materiaux", "listeImg": ["pommier.png"], "texte":"un pommier"},
-                        {"ressource": "monnaies","listeImg": ["pieceRouge.png"]},
-                        {"ressource":"symboles","listeImg": []}
+                        {"ressource": "monnaies","listeImg": ["pieceRouge.png"],"texte":""},
+                        {"ressource":"symboles","listeImg": [],"texte":""}
                     ]
 
                 }, 
@@ -274,11 +274,11 @@ export const DonneeExercices = [
                     "typeQuestion":"chiffres",
                     "nbTentativeTotal":3,
                     "choixReponse":[
-                        {"chiffre":5 ,"reponseValide":true},
-                        {"chiffre":6 ,"reponseValide":false},
-                        {"chiffre":7 ,"reponseValide":false},
-                        {"chiffre":3 ,"reponseValide":false},
-                        {"chiffre":4 ,"reponseValide":false},
+                        {"img":"", "texte":"5" ,"ressource":"","reponseValide":true},
+                        {"img":"","texte":"6" ,"ressource":"","reponseValide":false},
+                        {"img":"","texte":"7" ,"ressource":"","reponseValide":false},
+                        {"img":"","texte":"3" ,"ressource":"","reponseValide":false},
+                        {"img":"","texte":"4" ,"ressource":"","reponseValide":false},
                     ]
                 }
             ],

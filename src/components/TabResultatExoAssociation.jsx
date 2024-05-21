@@ -32,7 +32,9 @@ function TabResultatExoAssociation({categorie,listeComposantsCreeParLUtilisateur
                                         {compo.qteOk}
                                     </p> 
                                 </td>
-                                <td className="px-6 my-3" ><img src={`img/${categorie}/composants/${compo.img}`} className="h-14"/></td>
+                                <td className="px-6 my-3" >
+                                    <img src={`img/${categorie}/composants/${compo.img}`} className="h-14" alt={`images de ${compo.nom}`}/>
+                                </td>
                                 <td className="text-xl align-middle w-16 hidden sm:inline " >
                                         {compo.nomAuPluriel}
                                 </td>

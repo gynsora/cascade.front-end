@@ -16,7 +16,7 @@ function Home(){
   },[])
    return(
       <main className="min-h-screen"> 
-            <div className="text-center mx-auto max-w-2xl py-32 sm:py-32 lg:py-52">
+          <div className="text-center mx-auto max-w-2xl py-32 sm:py-32 lg:py-52">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               Bienvenue sur Cascade
             </h1>
@@ -33,7 +33,7 @@ function Home(){
               </Link>
             </div>
           </div>
-        </main>
+      </main>
    )
 }
 

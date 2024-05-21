@@ -103,7 +103,7 @@ function DivImageSymbolesMonnaiesMateriaux({item,etape}){
                         }
             onClick={()=>handleConstructionModelAssociation(item)}>
                 <img 
-                    src={`img/${donneesExerciceChoisi.categorie}/${etape}/${item.img}`} 
+                    src={`img/${donneesExerciceChoisi.categorie}/${etape}/${item.img}`} alt={`images materiel utilisable: ${item.nom}`}
                    
                 />
         </div>

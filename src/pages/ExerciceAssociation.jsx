@@ -100,7 +100,9 @@ function ExerciceAssociation() {
                 }
                 //création de l'objet qui contiendra toutes données initiale de l'exercice choisi
                 const donneeInitaleExerciceChoisi = {
-                    categorie: categorieChoisi.categorie,
+                    
+                    txtExplicationExercice: detailExerciceChoisi.txtExplicationExercice,
+                    sndExplicationExercice: detailExerciceChoisi.sndExplicationExercice,
                     txtCommandeExerciceAssociation: categorieChoisi.txtCommandeExerciceAssociation,
                     sndCommandeExerciceAssociation: categorieChoisi.sndCommandeExerciceAssociation,
                     txtRegleAssociation: categorieChoisi.txtRegleAssociation,
@@ -109,12 +111,13 @@ function ExerciceAssociation() {
                     sndValidationExerciceAssociationOk: categorieChoisi.sndValidationExerciceAssociationOk,
                     txtValidationExerciceAssociationKo: categorieChoisi.txtValidationExerciceAssociationKo,
                     sndValidationExerciceAssociationKo: categorieChoisi.sndValidationExerciceAssociationKo,
+
+                    categorie: categorieChoisi.categorie,
                     target: categorieChoisi.target,
                     imgCategorie: categorieChoisi.imgCategorie,
+                    
                     niveauExercice: detailExerciceChoisi.niveau,
                     typeExercice: detailExerciceChoisi.type,
-                    txtExplicationExercice: detailExerciceChoisi.txtExplicationExercice,
-                    sndExplicationExercice: detailExerciceChoisi.sndExplicationExercice,
                     ressourceMax: detailExerciceChoisi.ressourceMax,
                     etapeRessource: detailExerciceChoisi.etapeRessource,
                     composants: categorieChoisi.composants,

@@ -12,7 +12,7 @@ import imgLogo from '../assets/img/epmi_logo.png';
 function Logo(){
   return(
       <div className="md:justify-end logo h-14 w-14 bg-white p-1  mr-1 pt-2">
-          <img src={imgLogo} /> 
+          <img src={imgLogo} alt="image logo du site"/> 
       </div>
   );
 }

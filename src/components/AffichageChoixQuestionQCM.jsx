@@ -24,6 +24,7 @@ function AffichageChoixQuestionQCM(){
         "reponse":"",
         "typeReponse": "",
         "question": "",
+        "numeroQuestion":"",
     });
     const [affichageBtnSuivant, setAffichageBtnSuivant ] = useState(false) //useState permettant d'aller à la question suivant ou de finir le question, lorsque ce state est a true cela signifie que l'utilisateur ne peut plus donnée de réponse
 
@@ -55,6 +56,7 @@ function AffichageChoixQuestionQCM(){
                 "reponse":"",   
                 "typeReponse": "",
                 "question": "",
+                "numeroQuestion":"",
             })
             setAffichageBtnSuivant(false)
             setMessageChoixReponse("")
@@ -87,7 +89,7 @@ function AffichageChoixQuestionQCM(){
             "nbEssaiQuestion":infoResultatQuestion.nbEssaiQuestion+1,
             "tempsRealisationQuestion": secondsRef.current+1,
             "reponse": reponse, "typeReponse": typeReponse,
-            "question" : question})
+            "question" : question,"numeroQuestion":indexQuestion,})
         setMessageChoixReponse("Bravo!")
         setAffichageBtnSuivant(true)
     }
@@ -105,7 +107,7 @@ function AffichageChoixQuestionQCM(){
             "nbEssaiQuestion":infoResultatQuestion.nbEssaiQuestion+1,
             "tempsRealisationQuestion": secondsRef.current+1, 
             "reponse": reponse, "typeReponse": typeReponse,
-            "question" : question})
+            "question" : question,"numeroQuestion":indexQuestion,})
         setMessageChoixReponse("Raté!")
         setAffichageBtnSuivant(true)
     }
@@ -174,9 +176,9 @@ function AffichageChoixQuestionQCM(){
                 <div className={`mx-auto max-w-[500px] grid grid-cols-5 gap-2 p-2 md:gap-5 md:mb-[10px]` }>
                     {donneesExerciceChoisi.quizzQCM[indexQuestion].choixReponse.map((reponse)=>{
                         return (
-                            <div key={reponse.chiffre+"- index"} className="p-1 bg-gray-100 text-center align-middle  h-[80px]  hover:bg-yellow-500 hover:cursor-pointer"
+                            <div key={reponse.texte+"- index"} className="p-1 bg-gray-100 text-center align-middle  h-[80px]  hover:bg-yellow-500 hover:cursor-pointer"
                                  onClick={()=>handleReponseDeLUtilisateur(reponse , "chiffres" ,donneesExerciceChoisi.quizzQCM[indexQuestion].texteQuestion)}>
-                                <span className="inline-block align-middle h-full py-5 text-2xl"> {reponse.chiffre} </span>
+                                <span className="inline-block align-middle h-full py-5 text-2xl"> {reponse.texte} </span>
                             </div>
                         )
                     })}

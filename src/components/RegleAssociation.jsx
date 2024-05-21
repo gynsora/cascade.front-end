@@ -47,7 +47,7 @@ function RegleAssociation({detailComposantExercice}){
                                     }
                                     { (ressource != "composants" ) &&
                                         <div className="h-full  p-1 py-5">
-                                            <img src={"img/arrow1.png"} alt="Image 1" className="max-h-12 inline-block" />
+                                            <img src={"img/arrow1.png"} alt="Image fleche 1" className="max-h-12 inline-block" />
                                         </div>
                                     }
                                 </div> 

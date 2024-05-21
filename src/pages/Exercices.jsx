@@ -9,7 +9,7 @@ const donnesExercice = DonneeExercices ;
 import { ContexteAudio } from "../utils/contexte/ContexteAudio";
 
 //fonction permettant d'afficher les card de chaque exercice, chaque card contient un lien vers un exercice
-function CardVersExercices({exercice,categorieExercice}){
+function CardAffichageExercices({exercice,categorieExercice}){
     
     return (
         <>
@@ -68,11 +68,11 @@ function Exercices(){
                     <div className="p-5">
                         <h1 className="text-3xl mb-2">{categorieExercice.categorie}</h1>
                         <hr className="bg-green-500 border-0 h-1 "/>
-                    </div>
+                    </div> 
                     <div className="px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 ">
                         {/* boucle pour parcourir chaques exercices appartenant à 1 catégorie*/ }
                         { categorieExercice.listeExercice.map((exercice ) => (
-                            <CardVersExercices key={exercice.niveau} exercice={exercice} categorieExercice={categorieExercice}/>
+                            <CardAffichageExercices key={exercice.niveau} exercice={exercice} categorieExercice={categorieExercice}/>
                        ))}
                     </div>
                 </section>

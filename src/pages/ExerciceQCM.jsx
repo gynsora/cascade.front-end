@@ -10,6 +10,41 @@ import { ContexteRealisationQuestionnaireQCM } from "../utils/contexte/ContexteR
 
 import AffichageChoixQuestionQCM from "../components/AffichageChoixQuestionQCM";
 
+//fonction permettant d'afficher les reponse des QCM effectuer par l'utilisateur
+function AffichageReponseQCM({listeReponse,categorie}){
+    //console.log(listeReponse)
+    return (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+            {listeReponse.map((reponse,index) =>{
+                return (
+                    <div key={index} className="grid grid-cols-7 mt-5">
+                        <div className="col-span-7 bg-white p-1 sm:col-span-5">
+                            <div className="">{reponse.question}</div>
+                            <div className= {(reponse.reponse.reponseValide) ? "bg-green-200" : "bg-red-200"}>
+                                {reponse.nbEssaiQuestion} essai(s) en {reponse.tempsRealisationQuestion} sec - {reponse.nbConsultationsRegleAssociation} règle(s) - {reponse.nbConsultationsCommande} commande(s)
+                            </div>
+                        </div>
+                        <div className="hidden sm:block sm:col-span-2">
+                            {(reponse.typeReponse == "images") && 
+                                <div >
+                                    <img src={`img/${categorie}/${reponse.reponse.ressource}/${reponse.reponse.img}`} 
+                                    alt={`image ${reponse.reponse.texte}`} 
+                                    className={(reponse.reponse.reponseValide) ? "border-2 border-green-500 ml-2 w-24 h-24 lg:ml-0" : "border-2 border-red-500 ml-2 w-24 h-24  lg:ml-0"} />
+                                </div>
+                            }
+                             {(reponse.typeReponse == "chiffres") && 
+                                <div className={(reponse.reponse.reponseValide) ? "border-2 border-green-500 bg-green-200 ml-2 w-24 h-24 text-2xl flex justify-center items-center lg:ml-0" : "border-2 border-red-500 bg-red-200 ml-2 w-24 h-24  text-2xl flex justify-center items-center lg:ml-0"}>
+                                  {reponse.reponse.texte}
+                                </div>
+                            }
+                        </div>
+                    </div>
+                )
+            })}
+        </div>
+    )
+}
+
 //ce composant permet d'afficher la page d'un exercice de type QCM
 function ExerciceQCM() {
     //******************************************************************************************************************
@@ -49,7 +84,7 @@ function ExerciceQCM() {
         //a remplacer par le fetch data plus tard voir https://www.youtube.com/watch?v=QQYeipc_cik&list=LL&index=2&t=1142s
         function fetchExerciceAssociation(){
             if(!isCancelled){
-                console.log("fetchingData")
+                //console.log("fetchingData")
                 //initialisation du title de la page
                 document.title = "★ Cascade - Exercice QCM★"
                 //fetch ici
@@ -65,24 +100,20 @@ function ExerciceQCM() {
                 }
                 //création de l'objet qui contiendra toutes données initiale de l'exercice choisi
                 const donneeInitaleExerciceChoisi = {
-                    categorie: categorieChoisi.categorie,
-                    txtCommandeExerciceAssociation: categorieChoisi.txtCommandeExerciceAssociation,
-                    txtRegleAssociation: categorieChoisi.txtRegleAssociation,
-
+                    
                     titreIntroductionExerciceQuizz: categorieChoisi.titreIntroductionExerciceQuizz,
                     txtIntroductionExerciceQuizz: categorieChoisi.txtIntroductionExerciceQuizz,
                     sndIntroductionExerciceQuizz: categorieChoisi.sndIntroductionExerciceQuizz,
-
                     txtValidationExerciceQuizz: categorieChoisi.txtValidationExerciceQuizz,
                     sndValidationExerciceQuizz:categorieChoisi.sndValidationExerciceQuizz,
-
-                    target: categorieChoisi.target,
-                    imgCategorie: categorieChoisi.imgCategorie,
-                    niveauExercice: detailExerciceChoisi.niveau,
-                    typeExercice: detailExerciceChoisi.type,
-
                     quizzQCM: categorieChoisi.quizzQCM,
 
+                    categorie: categorieChoisi.categorie,
+                    target: categorieChoisi.target,
+                    imgCategorie: categorieChoisi.imgCategorie,
+
+                    niveauExercice: detailExerciceChoisi.niveau,
+                    typeExercice: detailExerciceChoisi.type,
                     ressourceMax: detailExerciceChoisi.ressourceMax,
                     etapeRessource: detailExerciceChoisi.etapeRessource,
                     composants: categorieChoisi.composants,
@@ -148,7 +179,7 @@ function ExerciceQCM() {
         timerId = setInterval(() => {
             secondsRef.current += 1;
             // Mise à jour de l'affichage du timer
-            console.log("Timer: ", secondsRef.current);
+            //console.log("Timer: ", secondsRef.current);
         }, 1000);
         }
         // Nettoyage du timer lors du démontage du composant ou lorsque le timer est arrêté
@@ -162,7 +193,7 @@ function ExerciceQCM() {
     
     //fonction permettant d'initialiser les données de l'exercice d'association choisi
     function handleInitialisationExerciceChoisi( donneeInitaleExerciceChoisi){
-        console.log("handle INitialisation QCM")
+        //console.log("handle INitialisation QCM")
         //setPhase("realisationExercice")
         setPhase("explicationQCM")
         setDonneesExerciceChoisi(donneeInitaleExerciceChoisi)
@@ -253,7 +284,7 @@ function ExerciceQCM() {
     }
 
     if (phase == 'resultatQCM' && donneesExerciceChoisi != ""){
-        console.log(listeReponse)
+        //console.log(listeReponse)
         return (
             <main className="min-h-screen py-32 sm:py-32 lg:py-42 " >
             {/* <div className="text-green-500 py-3 px-3">{donneesExerciceChoisi.txtCommandeExerciceAssociation}</div> */}
@@ -273,36 +304,3 @@ function ExerciceQCM() {
 
 export default ExerciceQCM;
 
-function AffichageReponseQCM({listeReponse,categorie}){
-    //console.log(listeReponse)
-    return (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-            {listeReponse.map((reponse,index) =>{
-                return (
-                    <div key={index} className="grid grid-cols-7 mt-5">
-                        <div className="col-span-7 bg-white p-1 sm:col-span-5">
-                            <div className="">{reponse.question}</div>
-                            <div className= {(reponse.reponse.reponseValide) ? "bg-green-200" : "bg-red-200"}>
-                                {reponse.nbEssaiQuestion} essai(s) en {reponse.tempsRealisationQuestion} sec - {reponse.nbConsultationsRegleAssociation} règle(s) - {reponse.nbConsultationsCommande} commande(s)
-                            </div>
-                        </div>
-                        <div className="hidden sm:block sm:col-span-2">
-                            {(reponse.typeReponse == "images") && 
-                                <div >
-                                    <img src={`img/${categorie}/${reponse.reponse.ressource}/${reponse.reponse.img}`} 
-                                    alt={`image ${reponse.reponse.texte}`} 
-                                    className={(reponse.reponse.reponseValide) ? "border-2 border-green-500 ml-2 w-24 h-24 lg:ml-0" : "border-2 border-red-500 ml-2 w-24 h-24  lg:ml-0"} />
-                                </div>
-                            }
-                             {(reponse.typeReponse == "chiffres") && 
-                                <div className={(reponse.reponse.reponseValide) ? "border-2 border-green-500 bg-green-200 ml-2 w-24 h-24 text-2xl flex justify-center items-center lg:ml-0" : "border-2 border-red-500 bg-red-200 ml-2 w-24 h-24  text-2xl flex justify-center items-center lg:ml-0"}>
-                                  {reponse.reponse.chiffre}
-                                </div>
-                            }
-                        </div>
-                    </div>
-                )
-            })}
-        </div>
-    )
-}
